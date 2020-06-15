@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AddIdeaActivity">
+
+    <TextView
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/sparkLabel"
+        android:textSize="30sp"
+        android:textStyle="bold"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sparkQn" />
+    <EditText
+        android:id="@+id/sparkAns"
+        android:layout_width="379dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:inputType="textMultiLine"
+
+        android:background="@drawable/input_outline"
+        android:ems="10"
+        android:hint="@string/sparkAns"
+        />
+
+    <TextView
+
+        android:layout_marginLeft="20dp"
+        android:id="@+id/ideaLabel"
+        android:textSize="30sp"
+        android:textStyle="bold"
+
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ideaQn" />
+
+    <EditText
+        android:id="@+id/ideaInput"
+        android:layout_width="379dp"
+        android:layout_height="118dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/input_outline"
+        android:ems="10"
+        android:hint="@string/thoughts"
+        android:inputType="textMultiLine"
+        android:padding="15dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="19sp"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+
+            android:layout_marginLeft="20dp"
+            android:id="@+id/cameraLabel"
+            android:textSize="30sp"
+            android:textStyle="bold"
+
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cameraLabel" />
+
+    <ImageView
+        android:id="@+id/postCameraButton"
+        android:layout_width="81dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+
+            android:layout_marginLeft="20dp"
+            android:id="@+id/locationLabel"
+            android:textSize="30sp"
+            android:textStyle="bold"
+
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/locationLabel" />
+
+        <ImageView
+            android:id="@+id/locationButton"
+            android:layout_width="81dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+
+            app:srcCompat="@android:drawable/ic_dialog_map" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/saveEntryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/saveButton" />
+
+</LinearLayout>

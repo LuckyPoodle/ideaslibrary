@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">IdeasLibrary</string>
+    <string name="sparkQn">What is the spark behind your idea/thoughts?</string>
+    <string name="sparkAns">What led to your ideas/thoughts?</string>
+    <string name="ideaQn">Add an idea/thought</string>
+    <string name="thoughts">Your idea/thought</string>
+    <string name="cameraLabel">Upload an image</string>
+    <string name="locationLabel">Record Location</string>
+    <string name="saveButton">SAVE ENTRY</string>
+</resources>
