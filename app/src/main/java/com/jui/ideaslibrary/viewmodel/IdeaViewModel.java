@@ -19,6 +19,7 @@ public class IdeaViewModel  extends AndroidViewModel {
     public MutableLiveData<Boolean> loadingerror=new MutableLiveData<Boolean>();
     //info if info is being loaded in background
     public MutableLiveData<Boolean> loading=new MutableLiveData<Boolean>();
+    public int numberOfIdeasinDB;
 
 
     private AsyncTask<Void,Void,List<IdeaEntry>>RetrieveIdeasTask;
@@ -56,6 +57,7 @@ public class IdeaViewModel  extends AndroidViewModel {
         // a asynctask , a simple way to create background thread
 
         ideasListVM.setValue(idealist);
+
         loadingerror.setValue(false);
         loading.setValue(false);
 
@@ -73,6 +75,7 @@ public class IdeaViewModel  extends AndroidViewModel {
         //foreground thread
         @Override
         protected void onPostExecute(List<IdeaEntry> ideas){
+            numberOfIdeasinDB=ideas.size();
             ideasRetrieved(ideas);
             Toast.makeText(getApplication(),"ideas retrieved from DATABASE",Toast.LENGTH_SHORT).show();
 
