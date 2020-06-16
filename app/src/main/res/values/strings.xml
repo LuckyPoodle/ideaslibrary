@@ -6,5 +6,8 @@
     <string name="thoughts">Your idea/thought</string>
     <string name="cameraLabel">Upload an image</string>
     <string name="locationLabel">Record Location</string>
-    <string name="saveButton">SAVE ENTRY</string>
+    <string name="saveButton">Yes!</string>
+    <string name="menu_title">IdeasLibrary</string>
+    <string name="home">home</string>
+    <string name="deleteButton">delete</string>
 </resources>

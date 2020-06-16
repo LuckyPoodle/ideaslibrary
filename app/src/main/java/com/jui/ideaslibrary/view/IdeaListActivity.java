@@ -1,14 +1,19 @@
 package com.jui.ideaslibrary.view;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jui.ideaslibrary.AddIdeaActivity;
+import com.jui.ideaslibrary.MainActivity;
 import com.jui.ideaslibrary.R;
 import com.jui.ideaslibrary.adapter.IdeasAdapter;
 import com.jui.ideaslibrary.model.IdeaEntry;
@@ -17,6 +22,7 @@ import com.jui.ideaslibrary.viewmodel.IdeaViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -26,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class IdeaListActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
+public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.ListItemClickListener {
     IdeaViewModel ideaViewModel;
     @BindView(R.id.ideasList)
     RecyclerView ideasList;
@@ -35,7 +41,9 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
 
-    private IdeasAdapter ideasAdapter = new IdeasAdapter(new ArrayList<>());
+    List<IdeaEntry> userIdealist;
+
+    private IdeasAdapter ideasAdapter;
 
 
     @Override
@@ -44,14 +52,16 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_idea_list);
         ButterKnife.bind(this);
 
+        ideasAdapter =new IdeasAdapter(new ArrayList<>());
+        ideasAdapter.setItemClickListener(this);
+
 
         ideaViewModel = ViewModelProviders.of(this).get(IdeaViewModel.class);
         ideaViewModel.refresh();
 
         ideasList.setLayoutManager(new LinearLayoutManager(this));
         ideasList.setAdapter(ideasAdapter);
-        ideasList.setOnClickListener(this);
-        ideasList.setOnLongClickListener(this);
+
 
 
         observeViewModel();
@@ -59,15 +69,32 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.listactivitymenu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+
+
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void observeViewModel() {
 
-        ideaViewModel.ideas.observe(this, new Observer<List<IdeaEntry>>() {
+        ideaViewModel.ideasListVM.observe(this, new Observer<List<IdeaEntry>>() {
             @Override
             public void onChanged(List<IdeaEntry> ideas) {
                 if (ideas!=null && ideas instanceof List){
                     ideasList.setVisibility(View.VISIBLE);
                     //loadingView.setVisibility(View.GONE);
-                    ideasAdapter.updateDogsList(ideas);
+                    userIdealist=ideas;
+                    ideasAdapter.updateDogsList(userIdealist);
                 }
             }
         });
@@ -99,46 +126,25 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-
-
     @Override
-    public void onClick(View v) {
-        Toast.makeText(this,"hi",Toast.LENGTH_SHORT).show();
+    public void onListItemClick(IdeaEntry ideaEntry) {
+        Log.d("IDEAS","CLICKED ON "+ideaEntry);
+        Intent intent=new Intent(IdeaListActivity.this, AddIdeaActivity.class);
+        intent.putExtra("IDEA_ID",ideaEntry.IdeaUid);
 
+        intent.putExtra("problem",ideaEntry.problemStatement);
+        intent.putExtra("idea",ideaEntry.thoughts);
+        intent.putExtra("location",ideaEntry.location);
+        intent.putExtra("image",ideaEntry.imageUrl);
+
+
+
+
+        startActivity(intent);
     }
 
     @Override
-    public boolean onLongClick(View v) {
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
-            builder=new AlertDialog.Builder(this,android.R.style.Theme_Material_Dialog_Alert); //material designs
-        }else{
-            builder=new AlertDialog.Builder(this);
-        }
-        builder.setTitle("Delete Entry")
-                .setMessage("Sure???")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-
-
-
-
-
-                    }
-                }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        }).setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-
-
-
-        return false;
-
-
+    public void onLongItemClick(int clickedItemIndex) {
+        Log.d("IDEAS","LONGGGGGGGG CLICKED ON "+clickedItemIndex);
     }
 }

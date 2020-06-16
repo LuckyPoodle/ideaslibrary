@@ -4,11 +4,9 @@ import android.app.Application;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.jui.ideaslibrary.model.IdeaDAO;
 import com.jui.ideaslibrary.model.IdeaDatabase;
 import com.jui.ideaslibrary.model.IdeaEntry;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -16,11 +14,12 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 public class IdeaViewModel  extends AndroidViewModel {
-    public MutableLiveData <List<IdeaEntry>>ideas=new MutableLiveData<List<IdeaEntry>>();
+    public MutableLiveData <List<IdeaEntry>> ideasListVM =new MutableLiveData<List<IdeaEntry>>();
     //we want to specify the type the mutablelivedata handle
     public MutableLiveData<Boolean> loadingerror=new MutableLiveData<Boolean>();
     //info if info is being loaded in background
     public MutableLiveData<Boolean> loading=new MutableLiveData<Boolean>();
+
 
     private AsyncTask<Void,Void,List<IdeaEntry>>RetrieveIdeasTask;
 
@@ -56,7 +55,7 @@ public class IdeaViewModel  extends AndroidViewModel {
         // performing any operation in database is NOT allowed on main thread, we hav to create
         // a asynctask , a simple way to create background thread
 
-        ideas.setValue(idealist);
+        ideasListVM.setValue(idealist);
         loadingerror.setValue(false);
         loading.setValue(false);
 
