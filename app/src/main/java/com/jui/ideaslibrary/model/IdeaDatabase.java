@@ -2,11 +2,15 @@ package com.jui.ideaslibrary.model;
 
 import android.content.Context;
 
+import com.jui.ideaslibrary.util.TimestampConverter;
+
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
-@Database(entities = {IdeaEntry.class},version = 1)  //entities related to this particular database
+@Database(entities = {IdeaEntry.class},version = 2)  //entities related to this particular database
+@TypeConverters(TimestampConverter.class)
 public abstract class IdeaDatabase extends RoomDatabase {
 
     //dogdatabase class be a singleton so we don create in multiple part of code, so all parts of code access the same object

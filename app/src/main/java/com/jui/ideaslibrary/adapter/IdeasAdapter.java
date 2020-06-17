@@ -82,7 +82,16 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
         problem.setText(ideaslist.get(position).problemStatement);
         thought.setText(ideaslist.get(position).thoughts);
+
+
+
         timestamp.setText(ideaslist.get(position).timestamp.toString());
+
+
+
+
+
+
         Util.loadImage(image,ideaslist.get(position).imageUrl, Util.getProgressDrawable(image.getContext()));
 
 

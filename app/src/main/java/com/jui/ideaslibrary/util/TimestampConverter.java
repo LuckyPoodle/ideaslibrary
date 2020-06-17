@@ -10,18 +10,13 @@ import androidx.room.TypeConverter;
 
 public class TimestampConverter {
 
-        static DateFormat df = new SimpleDateFormat(Constants.TIME_STAMP_FORMAT);
-        @TypeConverter
-        public static Date fromTimestamp(String value) {
-            if (value != null) {
-                try {
-                    return df.parse(value);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            } else {
-                return null;
-            }
-        }
+       @TypeConverter
+        public static Long toTimestamp(Date date){
+           return date==null? null:date.getTime();
+       }
+
+       @TypeConverter
+        public static Date toDate(Long timestamp){
+           return timestamp==null? null:new Date(timestamp);
+       }
 }
