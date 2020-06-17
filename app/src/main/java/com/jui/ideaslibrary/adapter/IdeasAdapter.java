@@ -2,6 +2,7 @@ package com.jui.ideaslibrary.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,11 @@ import com.jui.ideaslibrary.MainActivity;
 import com.jui.ideaslibrary.R;
 import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.util.Util;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHolder>{
+
+    private Context context;
 
 
 
@@ -71,18 +78,14 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         ImageView image=holder.itemView.findViewById(R.id.imageView);
         TextView problem=holder.itemView.findViewById(R.id.problem);
         TextView thought=holder.itemView.findViewById(R.id.thought);
+        TextView timestamp=holder.itemView.findViewById(R.id.timestamp);
 
         problem.setText(ideaslist.get(position).problemStatement);
         thought.setText(ideaslist.get(position).thoughts);
+        timestamp.setText(ideaslist.get(position).timestamp.toString());
         Util.loadImage(image,ideaslist.get(position).imageUrl, Util.getProgressDrawable(image.getContext()));
 
-        LinearLayout layout=holder.itemView.findViewById(R.id.ideaitemLayout);
-//        layout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+
 
 
     }

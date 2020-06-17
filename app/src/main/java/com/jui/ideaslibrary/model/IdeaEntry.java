@@ -1,12 +1,15 @@
 package com.jui.ideaslibrary.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.jui.ideaslibrary.util.TimestampConverter;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @Entity(tableName = "ideaentry")
 public class IdeaEntry {
@@ -16,7 +19,8 @@ public class IdeaEntry {
 
 
     @ColumnInfo(name="timestamp")
-    public String timestamp;
+    @TypeConverters({TimestampConverter.class})
+    public Date timestamp;
 
     @ColumnInfo(name="problemStatement")
     public String problemStatement;
@@ -33,7 +37,7 @@ public class IdeaEntry {
     public IdeaEntry() {
     }
 
-    public IdeaEntry(String timestamp, String problemStatement, String location, String thoughts, String imageUrl) {
+    public IdeaEntry(Date timestamp, String problemStatement, String location, String thoughts, String imageUrl) {
         this.timestamp = timestamp;
         this.problemStatement = problemStatement;
         this.location = location;

@@ -1,6 +1,8 @@
 package com.jui.ideaslibrary;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.jui.ideaslibrary.model.IdeaDatabase;
 import com.jui.ideaslibrary.model.IdeaEntry;
@@ -23,6 +26,7 @@ import java.util.concurrent.Executors;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -120,7 +124,7 @@ public class AddIdeaActivity extends AppCompatActivity {
 
         IdeaEntry newidea = new IdeaEntry();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        newidea.timestamp = timestamp.toString();
+        newidea.timestamp = timestamp;
         newidea.problemStatement = problem;
         newidea.thoughts = thought;
         newidea.location = "TEMPORARY";
@@ -146,6 +150,24 @@ public class AddIdeaActivity extends AppCompatActivity {
 
     @OnClick(R.id.postCameraButton)
     public void onPostCameraButtonClicked() {
+        if (ContextCompat.checkSelfPermission(AddIdeaActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) !=  PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
+
+            if (ContextCompat.checkSelfPermission(AddIdeaActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) ==  PackageManager.PERMISSION_GRANTED){
+                getImage();
+            }
+
+
+        }else{
+            getImage();
+        }
+
+
+
+    }
+
+    private void getImage(){
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, GALLERY_CODE);
