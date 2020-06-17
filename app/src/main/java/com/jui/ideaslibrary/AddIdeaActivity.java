@@ -124,7 +124,7 @@ public class AddIdeaActivity extends AppCompatActivity {
 
         IdeaEntry newidea = new IdeaEntry();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        newidea.timestamp = timestamp;
+        newidea.timestamp = timestamp.toString();
         newidea.problemStatement = problem;
         newidea.thoughts = thought;
         newidea.location = "TEMPORARY";
