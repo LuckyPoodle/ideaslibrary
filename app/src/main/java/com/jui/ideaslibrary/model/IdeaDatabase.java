@@ -23,7 +23,7 @@ public abstract class IdeaDatabase extends RoomDatabase {
 //
 //        @Override
 //        public void migrate(@NonNull SupportSQLiteDatabase database) {
-//            database.execSQL("ALTER TABLE 'ideaentry' ADD COLUMN 'datetime'");
+//            database.execSQL("ALTER TABLE 'ideaentry' ADD COLUMN 'datetime' TEXT DEFAULT NULL" );
 //        }
 //    };
 

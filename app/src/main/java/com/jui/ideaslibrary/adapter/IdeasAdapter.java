@@ -79,9 +79,11 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         TextView problem=holder.itemView.findViewById(R.id.problem);
         TextView thought=holder.itemView.findViewById(R.id.thought);
         TextView timestamp=holder.itemView.findViewById(R.id.timestamp);
+        TextView location=holder.itemView.findViewById(R.id.locationText);
 
         problem.setText(ideaslist.get(position).problemStatement);
         thought.setText(ideaslist.get(position).thoughts);
+        location.setText(ideaslist.get(position).location);
 
 
 

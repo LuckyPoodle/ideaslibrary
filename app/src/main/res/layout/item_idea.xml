@@ -30,6 +30,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="date" />
+        <TextView
+            android:id="@+id/locationText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="location" />
 
         <TextView
                     android:id="@+id/problem"
