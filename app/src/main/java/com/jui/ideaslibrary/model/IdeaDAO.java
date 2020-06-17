@@ -29,6 +29,9 @@ public interface IdeaDAO {
     @Query("DELETE FROM ideaentry WHERE IdeaUid= :id")
     void deleteIdea(int id);
 
+    @Query("SELECT COUNT(IdeaUid) FROM ideaentry")
+    int getRowCount();
+
 
 
 

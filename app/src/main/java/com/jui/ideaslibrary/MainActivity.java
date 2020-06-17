@@ -6,10 +6,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.view.IdeaListActivity;
 import com.jui.ideaslibrary.viewmodel.IdeaViewModel;
 
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,12 +23,15 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.numberOfIdeas)
-    TextView numberOfIdeas;
+
     @BindView(R.id.bulb)
     ImageView bulb;
     @BindView(R.id.listimage)
     ImageView listimage;
+
+    @BindView(R.id.numberofideas)
+    TextView numberOfIdeas;
+
     IdeaViewModel ideaViewModel;
 
     @Override
@@ -31,9 +40,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         ideaViewModel = ViewModelProviders.of(this).get(IdeaViewModel.class);
-        ideaViewModel.refresh();
-        int numofideas=ideaViewModel.numberOfIdeasinDB;
-        numberOfIdeas.setText(Integer.toString(numofideas) );
+
+        ideaViewModel.getCount();
+
+        ideaViewModel.count.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer ideacount) {
+                numberOfIdeas.setText(String.valueOf(ideacount));
+
+
+            }
+        });
+
+
+
+
+
+
     }
 
     @OnClick({R.id.bulb, R.id.listimage})
