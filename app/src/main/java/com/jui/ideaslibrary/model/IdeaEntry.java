@@ -21,9 +21,9 @@ public class IdeaEntry {
     @ColumnInfo(name="timestamp")
     public String timestamp;
 
-    @ColumnInfo(name="datetime")
-    @TypeConverters({TimestampConverter.class})
-    public Date datetime;
+//    @ColumnInfo(name="datetime")
+//    @TypeConverters({TimestampConverter.class})
+//    public Date datetime;
 
     @ColumnInfo(name="problemStatement")
     public String problemStatement;
@@ -40,9 +40,17 @@ public class IdeaEntry {
     public IdeaEntry() {
     }
 
-    public IdeaEntry(String timestamp, Date datetime, String problemStatement, String location, String thoughts, String imageUrl) {
+//    public IdeaEntry(String timestamp, Date datetime, String problemStatement, String location, String thoughts, String imageUrl) {
+//        this.timestamp = timestamp;
+//        this.datetime = datetime;
+//        this.problemStatement = problemStatement;
+//        this.location = location;
+//        this.thoughts = thoughts;
+//        this.imageUrl = imageUrl;
+//    }
+
+    public IdeaEntry(String timestamp,String problemStatement, String location, String thoughts, String imageUrl) {
         this.timestamp = timestamp;
-        this.datetime = datetime;
         this.problemStatement = problemStatement;
         this.location = location;
         this.thoughts = thoughts;

@@ -87,11 +87,6 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
         timestamp.setText(ideaslist.get(position).timestamp.toString());
 
-
-
-
-
-
         Util.loadImage(image,ideaslist.get(position).imageUrl, Util.getProgressDrawable(image.getContext()));
 
 

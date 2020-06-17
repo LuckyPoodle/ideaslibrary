@@ -20,6 +20,9 @@ import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.view.IdeaListActivity;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -69,13 +72,9 @@ public class AddIdeaActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra("IDEA_ID")) {
+            //means is editing
             Log.d("IDEAS", "++++++++++++++++++++++++++++++++++++++++edit+++++++++++++++++++++++++++");
 
-/*            intent.putExtra("IDEA_ID",ideaEntry.IdeaUid);
-            intent.putExtra("problem",ideaEntry.problemStatement);
-            intent.putExtra("idea",ideaEntry.thoughts);
-            intent.putExtra("location",ideaEntry.location);
-            intent.putExtra("image",ideaEntry.imageUrl);*/
 
             isEdit = true;
             deleteEntryButton.setVisibility(View.VISIBLE);
@@ -124,7 +123,11 @@ public class AddIdeaActivity extends AppCompatActivity {
 
         IdeaEntry newidea = new IdeaEntry();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        newidea.timestamp = timestamp.toString();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-YYYY HH:mm");
+        String formatteddate=formatter.format(timestamp);
+        newidea.timestamp=formatteddate;
+
+        //newidea.timestamp = timestamp.toString();
         newidea.problemStatement = problem;
         newidea.thoughts = thought;
         newidea.location = "TEMPORARY";
