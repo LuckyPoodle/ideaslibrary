@@ -1,7 +1,9 @@
 package com.jui.ideaslibrary.view;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +27,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,6 +55,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         setContentView(R.layout.activity_idea_list);
         ButterKnife.bind(this);
 
+
         ideasAdapter =new IdeasAdapter(new ArrayList<>());
         ideasAdapter.setItemClickListener(this);
 
@@ -61,8 +65,6 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
 
         ideasList.setLayoutManager(new LinearLayoutManager(this));
         ideasList.setAdapter(ideasAdapter);
-
-
 
         observeViewModel();
 

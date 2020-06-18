@@ -75,7 +75,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
     @Override
     public void onBindViewHolder(@NonNull IdeaViewHolder holder, int position) {
         //attach info from list to viewhlder
-        ImageView image=holder.itemView.findViewById(R.id.imageView);
+        ImageView image=holder.itemView.findViewById(R.id.ideaImage);
         TextView problem=holder.itemView.findViewById(R.id.problem);
         TextView thought=holder.itemView.findViewById(R.id.thought);
         TextView timestamp=holder.itemView.findViewById(R.id.timestamp);
@@ -88,8 +88,14 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
 
         timestamp.setText(ideaslist.get(position).timestamp.toString());
+        if (ideaslist.get(position).imageUrl!=null){
+            image.setVisibility(View.VISIBLE);
+            Util.loadImage(image,ideaslist.get(position).imageUrl, Util.getProgressDrawable(image.getContext()));
+        }else{
 
-        Util.loadImage(image,ideaslist.get(position).imageUrl, Util.getProgressDrawable(image.getContext()));
+        }
+
+
 
 
 
@@ -106,13 +112,18 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
     class IdeaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener , View.OnLongClickListener{
 
         public View itemView;
+        public ImageView ideaimage;
 
 
 
         public IdeaViewHolder(@NonNull View itemView) {  //allow us to instantiate class n call its supertype
             super(itemView);
             this.itemView=itemView; //store view element inside viewholder
+//            ideaimage=itemView.findViewById(R.id.ideaImage);
+//            ideaimage.setOnClickListener(this);
+
             itemView.setOnLongClickListener(this);
+
 
             itemView.setOnClickListener(this);
         }
@@ -121,7 +132,11 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         public void onClick(View v) {
 
             int clickedposition=getAdapterPosition();
-
+//            if (v.getId()==R.id.ideaImage){
+//                ideaimage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+//                ideaimage.setScaleType(ImageView.ScaleType.FIT_XY);
+//            }
+//
 
             if (listener!=null) {
                 listener.onListItemClick(ideaslist.get(clickedposition));

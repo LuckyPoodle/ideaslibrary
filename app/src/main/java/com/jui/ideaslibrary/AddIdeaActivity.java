@@ -33,6 +33,7 @@ import java.util.concurrent.Executors;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -45,6 +46,8 @@ public class AddIdeaActivity extends AppCompatActivity {
     private static final int GALLERY_CODE = 1;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final int ALL_PERMISSIONS_RESULT = 1111;
+    private static final int LOCATION_REQUESTCODE = 500;
+    private static final int GALLERYREQUESTCODE = 1000;
     @BindView(R.id.deleteEntryButton)
     Button deleteEntryButton;
     @BindView(R.id.locationAns)
@@ -183,6 +186,7 @@ public class AddIdeaActivity extends AppCompatActivity {
         if (imageUri != null) {
             newidea.imageUrl = imageUri.toString();
         } else {
+            newidea.imageUrl=null;
 
         }
 
@@ -202,26 +206,15 @@ public class AddIdeaActivity extends AppCompatActivity {
 
     @OnClick(R.id.postCameraButton)
     public void onPostCameraButtonClicked() {
-        if (ContextCompat.checkSelfPermission(AddIdeaActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
-
-            if (ContextCompat.checkSelfPermission(AddIdeaActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                getImage();
-            }
-
-
-        } else {
-            getImage();
-        }
-
+            checkGalleryPermission();
 
     }
 
     private void getImage() {
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, GALLERY_CODE);
+        startActivityForResult(galleryIntent,GALLERY_CODE);
     }
 
     @Override
@@ -243,29 +236,88 @@ public class AddIdeaActivity extends AppCompatActivity {
         //Todo: save location to string
         //
         //
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-            //REQUEST PERMISSION
-
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-
-        }
-
-
-        locationClass.getLocation();
-
+        checkLocationPermission();
 
 
 
     }
+    public void checkLocationPermission() {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Access Location for user to record their location ")
+                        .setMessage("This app requires access to your location so that you can easily record your exact location. Location access is only used for this purpose and is disabled right away after it is used")
+                        .setPositiveButton("Ask me", (dialog, which) -> {
+                            requestLocationPermission();
+                        })
+                        .setNegativeButton("No", ((dialog, which) -> {
+                            Toast.makeText(AddIdeaActivity.this,"No external storage access",Toast.LENGTH_SHORT).show();
+                        }))
+                        .show();
+            } else {
+                requestLocationPermission();
+            }
+        }getLocation();
+    }
+
+    private void getLocation() {
+        locationClass.getLocation();
+
+    }
+
+
+    public void checkGalleryPermission() {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Access local image file ")
+                        .setMessage("This app requires access to your phone gallery so that you can upload image with your Idea post")
+                        .setPositiveButton("Ask me", (dialog, which) -> {
+                            requestgalleryPermission();
+                        })
+                        .setNegativeButton("No", ((dialog, which) -> {
+                           Toast.makeText(AddIdeaActivity.this,"No external storage access",Toast.LENGTH_SHORT).show();
+                        }))
+                        .show();
+            } else {
+                requestgalleryPermission();
+            }
+        }getImage();
+    }
+
+    private void requestgalleryPermission() {
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERYREQUESTCODE);
+    }
+
+    private void requestLocationPermission() {
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUESTCODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case LOCATION_REQUESTCODE:
+                if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                    Log.d("PERMISSION","LOCATION ACCESS PERMISSION GRANTED");
+                }else{
+                    Log.d("PERMISSION","LOCATION ACCESS PERMISSION NOT GRANTED");
+                }
+
+
+            case GALLERYREQUESTCODE:
+                if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                    Log.d("PERMISSION","GALLERY ACCESS PERMISSION GRANTED");
+                }else{
+                    Log.d("PERMISSION","GALLERY ACCESS PERMISSION NOT GRANTED");
+                }
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+    }
+
+
+
 
 
 

@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ideaitemLayout"
     app:cardCornerRadius="8dp"
+    app:cardElevation="5dp"
     android:layout_margin="5dp"
+    android:padding="20dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -14,9 +16,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/ideaImage"
+                android:visibility="gone"
+                android:adjustViewBounds="true"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
                 android:layout_weight="3"
                 android:padding="4dp"
                 android:scaleType="center"

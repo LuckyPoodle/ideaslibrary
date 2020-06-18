@@ -8,10 +8,10 @@
     tools:context=".AddIdeaActivity">
 
     <TextView
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         android:id="@+id/sparkLabel"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
 
         android:layout_width="wrap_content"
@@ -19,8 +19,8 @@
         android:text="@string/sparkQn" />
     <EditText
         android:id="@+id/sparkAns"
-        android:layout_width="379dp"
-        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
         android:inputType="textMultiLine"
@@ -75,8 +75,8 @@
 
     <ImageView
         android:id="@+id/postCameraButton"
-        android:layout_width="81dp"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
 
@@ -119,8 +119,8 @@
 
         <ImageView
             android:id="@+id/locationButton"
-            android:layout_width="81dp"
-            android:layout_height="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
 
