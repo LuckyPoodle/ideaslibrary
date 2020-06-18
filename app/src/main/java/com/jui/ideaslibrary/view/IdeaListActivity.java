@@ -80,6 +80,15 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                startActivity(new Intent(IdeaListActivity.this, AddIdeaActivity.class));
+
+                break;
+
+
+        }
+
 
 
 
