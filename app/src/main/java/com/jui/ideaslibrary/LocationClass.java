@@ -9,6 +9,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -58,7 +60,6 @@ public class LocationClass {
     public void removelistener() {
         locationManager.removeUpdates(AddIdeaActivity.locationListener);
         locationManager=null;
-        Toast.makeText(context,"location fetched and disabled successfully!!",Toast.LENGTH_LONG).show();
 
     }
 

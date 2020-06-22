@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.view.IdeaListActivity;
 import com.jui.ideaslibrary.viewmodel.IdeaViewModel;
@@ -34,11 +35,17 @@ public class MainActivity extends AppCompatActivity {
 
     IdeaViewModel ideaViewModel;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+
+
+
         ideaViewModel = ViewModelProviders.of(this).get(IdeaViewModel.class);
 
         ideaViewModel.getCount();

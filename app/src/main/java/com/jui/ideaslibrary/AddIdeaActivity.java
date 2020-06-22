@@ -3,8 +3,6 @@ package com.jui.ideaslibrary;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
@@ -17,17 +15,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.jui.ideaslibrary.model.IdeaDatabase;
 import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.view.IdeaListActivity;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -35,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import butterknife.BindView;
@@ -82,13 +80,16 @@ public class AddIdeaActivity extends AppCompatActivity {
     public static LocationListener locationListener;
     public String[] myaddress = new String[1];
 
+    private ConstraintLayout constraintlayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_idea);
+        setContentView(R.layout.add_idea);
         ButterKnife.bind(this);
         locationClass=new LocationClass(this);
+        constraintlayout =findViewById(R.id.addIdealayout);
 
 
 
@@ -123,8 +124,16 @@ public class AddIdeaActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                 String add = locationClass.getAddress(location);
+                if (add==null){
+                    Snackbar.make(constraintlayout, "Error detecting location, please enter manually", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }else{
+                    locationAns.setTextSize(10);
+                }
                 locationAns.setText(add);
                 locationClass.removelistener();
+                Snackbar.make(constraintlayout, "Location fetched. Location detection switched off", Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
 
             }
 
@@ -177,6 +186,8 @@ public class AddIdeaActivity extends AppCompatActivity {
         String formatteddate = formatter.format(timestamp);
         newidea.timestamp = formatteddate;
 
+        newidea.isFavourite=0;
+
         //newidea.timestamp = timestamp.toString();
         newidea.problemStatement = problem;
         newidea.thoughts = thought;
@@ -212,7 +223,9 @@ public class AddIdeaActivity extends AppCompatActivity {
     }
 
     private void getImage() {
-        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+/*       ACTION_GET_CONTENT temporary permission grant to be able to read and/or write the content. That grant will eventually lapse
+Part of the Storage Access Framework includes the concept that a provider of content can offer permission grants that can last for an extended period ("long-term, persistent"). While there's nothing stopping an app from offering such persistent permissions with ACTION_GET_CONTENT on API Level 19+, they will be more common with ACTION_OPEN_DOCUMENT.*/
+        Intent galleryIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent,GALLERY_CODE);
     }
@@ -237,8 +250,6 @@ public class AddIdeaActivity extends AppCompatActivity {
         //
         //
         checkLocationPermission();
-
-
 
     }
     public void checkLocationPermission() {
@@ -267,6 +278,7 @@ public class AddIdeaActivity extends AppCompatActivity {
 
 
     public void checkGalleryPermission() {
+
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 new AlertDialog.Builder(this)
@@ -286,7 +298,8 @@ public class AddIdeaActivity extends AppCompatActivity {
     }
 
     private void requestgalleryPermission() {
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERYREQUESTCODE);
+        String[] gallerypermission=new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+        ActivityCompat.requestPermissions(this,gallerypermission, GALLERYREQUESTCODE);
     }
 
     private void requestLocationPermission() {

@@ -14,6 +14,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.jui.ideaslibrary.AddIdeaActivity;
 import com.jui.ideaslibrary.MainActivity;
 import com.jui.ideaslibrary.R;
@@ -27,6 +32,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -48,12 +54,55 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
 
     private IdeasAdapter ideasAdapter;
 
+    private Menu menu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_idea_list);
         ButterKnife.bind(this);
+        final Toolbar mToolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        CollapsingToolbarLayout ctl=findViewById(R.id.collapsing_toolbar_layout);
+        ctl.setTitle("My Brilliant Ideas");
+        //ctl.setCollapsedTitleTextColor(getResources().getColor(R.color.colorAccent));
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(IdeaListActivity.this, AddIdeaActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
+
+        AppBarLayout mAppBarLayout=(AppBarLayout)findViewById(R.id.app_bar);
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    isShow = true;
+                    showOption(R.id.action_add);
+                } else if (isShow) {
+                    isShow = false;
+                    hideOption(R.id.action_add);
+                }
+            }
+        });
+
+
+
 
 
         ideasAdapter =new IdeasAdapter(new ArrayList<>());
@@ -71,9 +120,23 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
 
     }
 
+
+    private void hideOption(int id) {
+        MenuItem item = menu.findItem(id);
+        item.setVisible(false);
+    }
+
+    private void showOption(int id) {
+        MenuItem item = menu.findItem(id);
+        item.setVisible(true);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu=menu;
         getMenuInflater().inflate(R.menu.listactivitymenu,menu);
+        hideOption(R.id.action_add);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -109,7 +172,6 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
                 }
             }
         });
-
         ideaViewModel.loadingerror.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isError) {
@@ -147,10 +209,6 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         intent.putExtra("idea",ideaEntry.thoughts);
         intent.putExtra("location",ideaEntry.location);
         intent.putExtra("image",ideaEntry.imageUrl);
-
-
-
-
         startActivity(intent);
     }
 

@@ -21,6 +21,15 @@ public class IdeaEntry {
     @ColumnInfo(name="timestamp")
     public String timestamp;
 
+    @ColumnInfo(name="isFavourite")
+    public Integer isFavourite;
+    //0 is FALSE
+    //1 is TRUE
+
+    @ColumnInfo(name="notes")
+    public String notes;
+
+
 //    @ColumnInfo(name="datetime")
 //    @TypeConverters({TimestampConverter.class})
 //    public Date datetime;

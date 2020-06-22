@@ -17,6 +17,9 @@ public interface IdeaDAO {
     @Query("SELECT * FROM ideaentry")
     List<IdeaEntry> getAllIdeas();
 
+    @Query("SELECT * FROM ideaentry WHERE isFavourite==1")
+    List<IdeaEntry> getFavIdeas();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Long insertIdea(IdeaEntry m);
 
@@ -31,6 +34,8 @@ public interface IdeaDAO {
 
     @Query("SELECT COUNT(IdeaUid) FROM ideaentry")
     int getRowCount();
+
+
 
 
 

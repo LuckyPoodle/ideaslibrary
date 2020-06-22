@@ -10,4 +10,7 @@
     <string name="menu_title">IdeasLibrary</string>
     <string name="home">home</string>
     <string name="deleteButton">delete</string>
+    <string name="uploadedfilepath">uploadedfilepath</string>
+    <string name="currentlocation">Where were you when you thought of your idea?</string>
+    <string name="locationButtonHint">You can press the Location Fetch button to grab your current location</string>
 </resources>
