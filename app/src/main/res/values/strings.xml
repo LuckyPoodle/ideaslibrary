@@ -6,11 +6,13 @@
     <string name="thoughts">Your idea/thought</string>
     <string name="cameraLabel">Upload an image</string>
     <string name="locationLabel">Record Location</string>
-    <string name="saveButton">Yes!</string>
+    <string name="saveButton">Save!</string>
     <string name="menu_title">IdeasLibrary</string>
     <string name="home">home</string>
     <string name="deleteButton">delete</string>
     <string name="uploadedfilepath">uploadedfilepath</string>
     <string name="currentlocation">Where were you when you thought of your idea?</string>
     <string name="locationButtonHint">You can press the Location Fetch button to grab your current location</string>
+    <string name="welcome">Hello Master of Ideas!</string>
+    <string name="showfavourite">Favorited Ideas</string>
 </resources>

@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -50,6 +50,10 @@ public class AddIdeaActivity extends AppCompatActivity {
     Button deleteEntryButton;
     @BindView(R.id.locationAns)
     EditText locationAns;
+    @BindView(R.id.imageplaceholder)
+    TextView imageplaceholder;
+    @BindView(R.id.imageicon)
+    ImageView imageicon;
 
 
     private IdeaEntry newIdeaEntry;
@@ -88,9 +92,8 @@ public class AddIdeaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_idea);
         ButterKnife.bind(this);
-        locationClass=new LocationClass(this);
-        constraintlayout =findViewById(R.id.addIdealayout);
-
+        locationClass = new LocationClass(this);
+        constraintlayout = findViewById(R.id.addIdealayout);
 
 
         db = IdeaDatabase.getInstance(getApplicationContext());
@@ -124,10 +127,10 @@ public class AddIdeaActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                 String add = locationClass.getAddress(location);
-                if (add==null){
+                if (add == null) {
                     Snackbar.make(constraintlayout, "Error detecting location, please enter manually", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                }else{
+                } else {
                     locationAns.setTextSize(10);
                 }
                 locationAns.setText(add);
@@ -167,8 +170,7 @@ public class AddIdeaActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_home:
-                startActivity(new Intent(AddIdeaActivity.this, IdeaListActivity.class));
-
+                startActivity(new Intent(AddIdeaActivity.this, MainActivity.class));
                 break;
 
 
@@ -186,18 +188,19 @@ public class AddIdeaActivity extends AppCompatActivity {
         String formatteddate = formatter.format(timestamp);
         newidea.timestamp = formatteddate;
 
-        newidea.isFavourite=0;
+        newidea.isFavourite = 0;
 
         //newidea.timestamp = timestamp.toString();
         newidea.problemStatement = problem;
         newidea.thoughts = thought;
         Log.d("LOCATION", "in createIdea =====================location is " + location);
-        newidea.location=locationAns.getText().toString();
+        newidea.location = locationAns.getText().toString();
 
         if (imageUri != null) {
             newidea.imageUrl = imageUri.toString();
+
         } else {
-            newidea.imageUrl=null;
+            newidea.imageUrl = null;
 
         }
 
@@ -218,7 +221,7 @@ public class AddIdeaActivity extends AppCompatActivity {
     @OnClick(R.id.postCameraButton)
     public void onPostCameraButtonClicked() {
 
-            checkGalleryPermission();
+        checkGalleryPermission();
 
     }
 
@@ -227,7 +230,7 @@ public class AddIdeaActivity extends AppCompatActivity {
 Part of the Storage Access Framework includes the concept that a provider of content can offer permission grants that can last for an extended period ("long-term, persistent"). While there's nothing stopping an app from offering such persistent permissions with ACTION_GET_CONTENT on API Level 19+, they will be more common with ACTION_OPEN_DOCUMENT.*/
         Intent galleryIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent,GALLERY_CODE);
+        startActivityForResult(galleryIntent, GALLERY_CODE);
     }
 
     @Override
@@ -236,6 +239,9 @@ Part of the Storage Access Framework includes the concept that a provider of con
         if (requestCode == GALLERY_CODE && resultCode == RESULT_OK) {
             if (data != null) {
                 imageUri = data.getData();
+                imageplaceholder.setVisibility(View.VISIBLE);
+                imageplaceholder.setText(imageUri.toString().substring(0,50)+"...");
+                imageicon.setVisibility(View.GONE);
 
 
             }
@@ -252,9 +258,10 @@ Part of the Storage Access Framework includes the concept that a provider of con
         checkLocationPermission();
 
     }
+
     public void checkLocationPermission() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
                         .setTitle("Access Location for user to record their location ")
                         .setMessage("This app requires access to your location so that you can easily record your exact location. Location access is only used for this purpose and is disabled right away after it is used")
@@ -262,13 +269,14 @@ Part of the Storage Access Framework includes the concept that a provider of con
                             requestLocationPermission();
                         })
                         .setNegativeButton("No", ((dialog, which) -> {
-                            Toast.makeText(AddIdeaActivity.this,"No external storage access",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddIdeaActivity.this, "No external storage access", Toast.LENGTH_SHORT).show();
                         }))
                         .show();
             } else {
                 requestLocationPermission();
             }
-        }getLocation();
+        }
+        getLocation();
     }
 
     private void getLocation() {
@@ -279,8 +287,8 @@ Part of the Storage Access Framework includes the concept that a provider of con
 
     public void checkGalleryPermission() {
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 new AlertDialog.Builder(this)
                         .setTitle("Access local image file ")
                         .setMessage("This app requires access to your phone gallery so that you can upload image with your Idea post")
@@ -288,50 +296,47 @@ Part of the Storage Access Framework includes the concept that a provider of con
                             requestgalleryPermission();
                         })
                         .setNegativeButton("No", ((dialog, which) -> {
-                           Toast.makeText(AddIdeaActivity.this,"No external storage access",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddIdeaActivity.this, "No external storage access", Toast.LENGTH_SHORT).show();
                         }))
                         .show();
             } else {
                 requestgalleryPermission();
             }
-        }getImage();
+        }
+        getImage();
     }
 
     private void requestgalleryPermission() {
-        String[] gallerypermission=new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
-        ActivityCompat.requestPermissions(this,gallerypermission, GALLERYREQUESTCODE);
+        String[] gallerypermission = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+        ActivityCompat.requestPermissions(this, gallerypermission, GALLERYREQUESTCODE);
     }
 
     private void requestLocationPermission() {
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUESTCODE);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUESTCODE);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case LOCATION_REQUESTCODE:
-                if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                    Log.d("PERMISSION","LOCATION ACCESS PERMISSION GRANTED");
-                }else{
-                    Log.d("PERMISSION","LOCATION ACCESS PERMISSION NOT GRANTED");
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("PERMISSION", "LOCATION ACCESS PERMISSION GRANTED");
+                } else {
+                    Log.d("PERMISSION", "LOCATION ACCESS PERMISSION NOT GRANTED");
                 }
 
 
             case GALLERYREQUESTCODE:
-                if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                    Log.d("PERMISSION","GALLERY ACCESS PERMISSION GRANTED");
-                }else{
-                    Log.d("PERMISSION","GALLERY ACCESS PERMISSION NOT GRANTED");
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("PERMISSION", "GALLERY ACCESS PERMISSION GRANTED");
+                } else {
+                    Log.d("PERMISSION", "GALLERY ACCESS PERMISSION NOT GRANTED");
                 }
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
     }
-
-
-
-
 
 
     @OnClick(R.id.saveEntryButton)
@@ -345,8 +350,6 @@ Part of the Storage Access Framework includes the concept that a provider of con
         startActivity(new Intent(AddIdeaActivity.this, IdeaListActivity.class));
 
     }
-
-
 
 
     ////////////BACKGROUND TASKS FOR creating,updating, deleting

@@ -18,7 +18,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="16dp"
 
         android:layout_marginEnd="8dp"
         android:gravity="center_horizontal"
@@ -110,8 +110,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-
-
             android:text="@string/cameraLabel"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -142,13 +140,14 @@
         app:layout_constraintTop_toBottomOf="@id/gallerylayout" />
     <TextView
         android:id="@+id/imageplaceholder"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:textAlignment="center"
         android:text="@string/uploadedfilepath"
-        android:textSize="15sp"
+        android:textSize="10sp"
         android:textStyle="italic"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -173,8 +172,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-
-
             android:text="@string/locationLabel"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -194,7 +191,7 @@
 
     <EditText
         android:id="@+id/locationAns"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -217,17 +214,26 @@
 
         <Button
             android:layout_weight="2"
-            android:paddingTop="20dp"
+            android:background="@drawable/buttonshape"
             android:id="@+id/saveEntryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/saveButton" />
+            android:text="@string/saveButton"
+            android:textAlignment="center"
+            android:textStyle="bold"
+
+
+            />
 
         <Button
             android:layout_weight="2"
             android:visibility="gone"
+            android:background="@drawable/deletebuttonshape"
             android:id="@+id/deleteEntryButton"
             android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textStyle="bold"
+
             android:layout_height="wrap_content"
             android:text="@string/deleteButton" />
 

@@ -1,6 +1,7 @@
 package com.jui.ideaslibrary.view;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -41,7 +42,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.ListItemClickListener {
+public class IdeaListActivity extends AppCompatActivity {
+    // implements IdeasAdapter.ListItemClickListener
     IdeaViewModel ideaViewModel;
     @BindView(R.id.ideasList)
     RecyclerView ideasList;
@@ -67,6 +69,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
 
         CollapsingToolbarLayout ctl=findViewById(R.id.collapsing_toolbar_layout);
         ctl.setTitle("My Brilliant Ideas");
+
         //ctl.setCollapsedTitleTextColor(getResources().getColor(R.color.colorAccent));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -94,6 +97,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
                 if (scrollRange + verticalOffset == 0) {
                     isShow = true;
                     showOption(R.id.action_add);
+
                 } else if (isShow) {
                     isShow = false;
                     hideOption(R.id.action_add);
@@ -106,7 +110,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
 
 
         ideasAdapter =new IdeasAdapter(new ArrayList<>());
-        ideasAdapter.setItemClickListener(this);
+        //ideasAdapter.setItemClickListener(this);
 
 
         ideaViewModel = ViewModelProviders.of(this).get(IdeaViewModel.class);
@@ -147,6 +151,9 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
             case R.id.action_add:
                 startActivity(new Intent(IdeaListActivity.this, AddIdeaActivity.class));
 
+                break;
+            case R.id.action_home:
+                startActivity(new Intent(IdeaListActivity.this, MainActivity.class));
                 break;
 
 
@@ -199,21 +206,21 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     }
 
 
-    @Override
-    public void onListItemClick(IdeaEntry ideaEntry) {
-        Log.d("IDEAS","CLICKED ON "+ideaEntry);
-        Intent intent=new Intent(IdeaListActivity.this, AddIdeaActivity.class);
-        intent.putExtra("IDEA_ID",ideaEntry.IdeaUid);
-
-        intent.putExtra("problem",ideaEntry.problemStatement);
-        intent.putExtra("idea",ideaEntry.thoughts);
-        intent.putExtra("location",ideaEntry.location);
-        intent.putExtra("image",ideaEntry.imageUrl);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onLongItemClick(int clickedItemIndex) {
-        Log.d("IDEAS","LONGGGGGGGG CLICKED ON "+clickedItemIndex);
-    }
+//    @Override
+//    public void onListItemClick(IdeaEntry ideaEntry) {
+//        Log.d("IDEAS","CLICKED ON "+ideaEntry);
+//        Intent intent=new Intent(IdeaListActivity.this, AddIdeaActivity.class);
+//        intent.putExtra("IDEA_ID",ideaEntry.IdeaUid);
+//
+//        intent.putExtra("problem",ideaEntry.problemStatement);
+//        intent.putExtra("idea",ideaEntry.thoughts);
+//        intent.putExtra("location",ideaEntry.location);
+//        intent.putExtra("image",ideaEntry.imageUrl);
+//        startActivity(intent);
+//    }
+//
+//    @Override
+//    public void onLongItemClick(int clickedItemIndex) {
+//        Log.d("IDEAS","LONGGGGGGGG CLICKED ON "+clickedItemIndex);
+//    }
 }

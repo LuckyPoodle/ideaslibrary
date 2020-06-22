@@ -2,7 +2,9 @@ package com.jui.ideaslibrary.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,35 +114,51 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
     class IdeaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener , View.OnLongClickListener{
 
         public View itemView;
-        public ImageView ideaimage;
+        ImageView ideaimage;
+        TextView problem;
+        ImageView starbutton;
+
 
 
 
         public IdeaViewHolder(@NonNull View itemView) {  //allow us to instantiate class n call its supertype
             super(itemView);
             this.itemView=itemView; //store view element inside viewholder
-//            ideaimage=itemView.findViewById(R.id.ideaImage);
-//            ideaimage.setOnClickListener(this);
+            ideaimage=itemView.findViewById(R.id.ideaImage);
+            ideaimage.setOnClickListener(this);
+            problem=itemView.findViewById(R.id.problem);
+            problem.setOnClickListener(this);
+            starbutton=itemView.findViewById(R.id.favStar);
+            starbutton.setOnClickListener(this);
 
-            itemView.setOnLongClickListener(this);
+//            itemView.setOnLongClickListener(this);
+//            itemView.setOnClickListener(this);
 
 
-            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
 
             int clickedposition=getAdapterPosition();
-//            if (v.getId()==R.id.ideaImage){
-//                ideaimage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-//                ideaimage.setScaleType(ImageView.ScaleType.FIT_XY);
-//            }
-//
-
-            if (listener!=null) {
-                listener.onListItemClick(ideaslist.get(clickedposition));
+            if (v.getId()==R.id.ideaImage){
+                ideaimage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                ideaimage.setScaleType(ImageView.ScaleType.FIT_XY);
             }
+
+            if (v.getId()==R.id.problem){
+                Log.d("IDEAS","*************************************************CLICKED ON "+ideaslist.get(getAdapterPosition()).problemStatement);
+            }
+
+            if (v.getId()==R.id.favStar){
+                starbutton.setImageResource(R.drawable.ic_sharp_star_24);
+            }
+//
+//
+//            if (listener!=null) {
+//                listener.onListItemClick(ideaslist.get(clickedposition));
+//            }
+
             return;
 
         }
