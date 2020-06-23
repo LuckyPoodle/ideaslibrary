@@ -6,6 +6,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.jui.ideaslibrary.view.IdeaListActivity;
 import com.jui.ideaslibrary.viewmodel.IdeaViewModel;
 
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.emoticon)
     ImageView emoticon;
 
+    AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +60,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
     }
 

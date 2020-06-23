@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.media.Image;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,6 +19,7 @@ import com.jui.ideaslibrary.MainActivity;
 import com.jui.ideaslibrary.R;
 import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.util.Util;
+import com.jui.ideaslibrary.view.IdeaListActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -59,7 +63,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
 
     //a method to update this list
-    public void updateDogsList(List<IdeaEntry> newIdeas){
+    public void updateIdeasList(List<IdeaEntry> newIdeas){
         ideaslist.clear();
         ideaslist.addAll(newIdeas);
         notifyDataSetChanged();
@@ -131,7 +135,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             starbutton=itemView.findViewById(R.id.favStar);
             starbutton.setOnClickListener(this);
 
-//            itemView.setOnLongClickListener(this);
+            itemView.setOnLongClickListener(this);
 //            itemView.setOnClickListener(this);
 
 
@@ -165,14 +169,11 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
         @Override
         public boolean onLongClick(View v) {
-            int clickedposition=getAdapterPosition();
-            if (listener!=null) {
-                listener.onListItemClick(ideaslist.get(clickedposition));
-                return true;
-            }
             return false;
         }
     }
+
+
 
 
 }

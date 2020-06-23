@@ -1,25 +1,23 @@
 package com.jui.ideaslibrary.view;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.jui.ideaslibrary.AddIdeaActivity;
 import com.jui.ideaslibrary.MainActivity;
 import com.jui.ideaslibrary.R;
@@ -31,10 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -57,6 +53,10 @@ public class IdeaListActivity extends AppCompatActivity {
     private IdeasAdapter ideasAdapter;
 
     private Menu menu;
+
+    ActionMode actionMode;
+
+    AdView mAdView;
 
 
     @Override
@@ -121,7 +121,14 @@ public class IdeaListActivity extends AppCompatActivity {
 
         observeViewModel();
 
-
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
 
@@ -175,7 +182,7 @@ public class IdeaListActivity extends AppCompatActivity {
                     ideasList.setVisibility(View.VISIBLE);
                     //loadingView.setVisibility(View.GONE);
                     userIdealist=ideas;
-                    ideasAdapter.updateDogsList(userIdealist);
+                    ideasAdapter.updateIdeasList(userIdealist);
                 }
             }
         });
@@ -204,6 +211,10 @@ public class IdeaListActivity extends AppCompatActivity {
 
 
     }
+
+
+
+
 
 
 //    @Override
