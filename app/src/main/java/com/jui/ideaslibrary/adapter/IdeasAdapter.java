@@ -179,8 +179,15 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
             int clickedposition=getAdapterPosition();
             if (v.getId()==R.id.ideaImage){
-                ideaimage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                ideaimage.setScaleType(ImageView.ScaleType.FIT_XY);
+                if (ideaimage.getScaleType()!= ImageView.ScaleType.FIT_XY){
+                    ideaimage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    ideaimage.setScaleType(ImageView.ScaleType.FIT_XY);
+                }else{
+                    int pixels = (int) (200 * context.getResources().getDisplayMetrics().density);
+                    ideaimage.getLayoutParams().height = pixels;
+                    ideaimage.setScaleType(ImageView.ScaleType.CENTER);
+                }
+
             }
 
             if (v.getId()==R.id.problem){
