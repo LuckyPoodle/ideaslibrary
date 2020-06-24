@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +68,8 @@ public class AddIdeaActivity extends AppCompatActivity {
     TextView imageplaceholder;
     @BindView(R.id.imageicon)
     ImageView imageicon;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
 
     private IdeaEntry newIdeaEntry;
@@ -121,7 +124,7 @@ public class AddIdeaActivity extends AppCompatActivity {
             isEdit = true;
             deleteEntryButton.setVisibility(View.VISIBLE);
             setTitle("Edit Idea");
-            isFavourite=intent.getIntExtra("isFavourite",0);
+            isFavourite = intent.getIntExtra("isFavourite", 0);
             sparkAns.setText(intent.getStringExtra("problem"));
             ideaInput.setText(intent.getStringExtra("idea"));
             if (intent.getStringExtra("image") != null) {
@@ -142,7 +145,7 @@ public class AddIdeaActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                 String add = locationClass.getAddress(location);
-                if (add == null || add.trim().length()==0) {
+                if (add == null || add.trim().length() == 0) {
                     Snackbar.make(constraintlayout, "Error detecting location, please enter manually", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
@@ -151,6 +154,7 @@ public class AddIdeaActivity extends AppCompatActivity {
                     Snackbar.make(constraintlayout, "Location fetched. Location detection switched off", Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
+                progressBar.setVisibility(View.INVISIBLE);
                 locationAns.setText(add);
 
 
@@ -228,7 +232,7 @@ public class AddIdeaActivity extends AppCompatActivity {
         } else {
             Log.d("IDEAS", "+++++++++++++++++++++++++++isEdit == true+++++++++++++++++++++++++");
             newidea.IdeaUid = ideaid;
-            newidea.isFavourite=isFavourite;
+            newidea.isFavourite = isFavourite;
             new UpdateIdeaAsyncTask().execute(newidea);
         }
 
@@ -257,7 +261,7 @@ Part of the Storage Access Framework includes the concept that a provider of con
             if (data != null) {
                 imageUri = data.getData();
                 imageplaceholder.setVisibility(View.VISIBLE);
-                imageplaceholder.setText(imageUri.toString().substring(0,50)+"...");
+                imageplaceholder.setText(imageUri.toString().substring(0, 50) + "...");
                 imageicon.setVisibility(View.GONE);
 
 
@@ -273,6 +277,7 @@ Part of the Storage Access Framework includes the concept that a provider of con
         //
         //
         checkLocationPermission();
+        progressBar.setVisibility(View.VISIBLE);
 
     }
 

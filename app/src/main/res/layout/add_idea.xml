@@ -21,239 +21,253 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:id="@+id/addIdealayout"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/sparkLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-
-        android:layout_marginEnd="8dp"
-        android:gravity="center_horizontal"
-        android:text="@string/sparkQn"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <EditText
-        android:id="@+id/sparkAns"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/border"
-
-        android:ems="10"
-        android:hint="@string/sparkAns"
-        android:inputType="textMultiLine"
-        android:padding="15dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="19sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.062"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sparkLabel" />
-
-    <TextView
-
-        android:id="@+id/ideaLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-
-
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center_horizontal"
-        android:text="@string/ideaQn"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.062"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sparkAns" />
-
-
-    <EditText
-        android:id="@+id/ideaInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/border"
-        android:ems="10"
-        android:hint="@string/thoughts"
-        android:inputType="textMultiLine"
-        android:padding="15dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="19sp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ideaLabel" />
-
-    <LinearLayout
-        android:id="@+id/gallerylayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="left"
-        android:orientation="horizontal"
-
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ideaInput">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addIdealayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/cameraLabel"
-            android:layout_width="wrap_content"
+            android:id="@+id/sparkLabel"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="@string/cameraLabel"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/postCameraButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal|top"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+
             android:layout_marginEnd="8dp"
-            android:tooltipText="Choose an image from gallery"
-            app:srcCompat="@drawable/galleryicon" />
+            android:gravity="center_horizontal"
+            android:text="@string/sparkQn"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
-    <ImageView
-        android:id="@+id/imageicon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:visibility="visible"
-        android:src="@drawable/imageplaceholder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gallerylayout" />
-    <TextView
-        android:id="@+id/imageplaceholder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:text="@string/uploadedfilepath"
-        android:textSize="10sp"
-        android:textStyle="italic"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gallerylayout" />
 
-    <LinearLayout
-        android:id="@+id/locationlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageplaceholder">
+        <EditText
+            android:id="@+id/sparkAns"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border"
+
+            android:ems="10"
+            android:hint="@string/sparkAns"
+            android:inputType="textMultiLine"
+            android:padding="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="19sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.062"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sparkLabel" />
 
         <TextView
-            android:id="@+id/locationLabel"
+
+            android:id="@+id/ideaLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+
+
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_horizontal"
+            android:text="@string/ideaQn"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.062"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sparkAns" />
+
+
+        <EditText
+            android:id="@+id/ideaInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:hint="@string/thoughts"
+            android:inputType="textMultiLine"
+            android:padding="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="19sp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ideaLabel" />
+
+        <LinearLayout
+            android:id="@+id/gallerylayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:gravity="left"
-            android:text="@string/locationLabel"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
 
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ideaInput">
+
+            <TextView
+                android:id="@+id/cameraLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/cameraLabel"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/postCameraButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:tooltipText="Choose an image from gallery"
+                app:srcCompat="@drawable/galleryicon" />
+
+        </LinearLayout>
 
         <ImageView
-            android:id="@+id/locationButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:id="@+id/imageicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            android:src="@drawable/imageplaceholder"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gallerylayout" />
 
-            android:tooltipText="@string/locationButtonHint"
-            app:srcCompat="@drawable/locationdetectionicon" />
-
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/locationAns"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/currentlocation"
-        android:textSize="19sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/locationlayout" />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/locationAns"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_weight="2"
-            android:background="@drawable/buttonshape"
-            android:id="@+id/saveEntryButton"
+        <TextView
+            android:id="@+id/imageplaceholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/saveButton"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/uploadedfilepath"
             android:textAlignment="center"
-            android:textColor="@color/design_default_color_surface"
-            android:textStyle="bold"
+            android:textSize="10sp"
+            android:textStyle="italic"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gallerylayout" />
 
-
-            />
-
-        <Button
-            android:layout_weight="2"
-            android:visibility="gone"
-            android:background="@drawable/deletebuttonshape"
-            android:id="@+id/deleteEntryButton"
+        <LinearLayout
+            android:id="@+id/locationlayout"
             android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:textStyle="bold"
-
             android:layout_height="wrap_content"
-            android:text="@string/deleteButton" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageplaceholder">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/locationLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/locationLabel"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/locationButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+
+                android:tooltipText="@string/locationButtonHint"
+                app:srcCompat="@drawable/locationdetectionicon" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/locationAns"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/currentlocation"
+            android:textSize="19sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/locationlayout" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/locationAns">
+
+            <Button
+                android:id="@+id/saveEntryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/buttonshape"
+                android:text="@string/saveButton"
+                android:textAlignment="center"
+                android:textColor="@color/design_default_color_surface"
+                android:textStyle="bold"
+
+
+                />
+
+            <Button
+                android:id="@+id/deleteEntryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/deletebuttonshape"
+                android:text="@string/deleteButton"
+                android:textAlignment="center"
+
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:visibility="invisible"
+            android:layout_width="58dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gallerylayout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
