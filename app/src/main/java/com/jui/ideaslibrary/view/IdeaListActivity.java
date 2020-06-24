@@ -78,20 +78,11 @@ public class IdeaListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_idea_list);
         ButterKnife.bind(this);
         final Toolbar mToolbar=(Toolbar)findViewById(R.id.toolbar);
-        mToolbar.setNavigationIcon(R.drawable.backnavicon);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(IdeaListActivity.this,MainActivity.class));
-            }
-        });
         setSupportActionBar(mToolbar);
 
         CollapsingToolbarLayout ctl=findViewById(R.id.collapsing_toolbar_layout);
         ctl.setTitle("My Brilliant Ideas");
 
-
-        //ctl.setCollapsedTitleTextColor(getResources().getColor(R.color.colorAccent));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -182,8 +173,6 @@ public class IdeaListActivity extends AppCompatActivity {
             }
         });
 
-
-        //return super.onCreateOptionsMenu(menu);
         return true;
     }
 

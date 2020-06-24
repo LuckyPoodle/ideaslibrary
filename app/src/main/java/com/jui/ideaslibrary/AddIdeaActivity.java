@@ -85,6 +85,7 @@ public class AddIdeaActivity extends AppCompatActivity {
 
     private String timestamp;
     private String location;
+    private int isFavourite;
     int ideaid;
 
     private Uri imageUri;
@@ -120,6 +121,7 @@ public class AddIdeaActivity extends AppCompatActivity {
             isEdit = true;
             deleteEntryButton.setVisibility(View.VISIBLE);
             setTitle("Edit Idea");
+            isFavourite=intent.getIntExtra("isFavourite",0);
             sparkAns.setText(intent.getStringExtra("problem"));
             ideaInput.setText(intent.getStringExtra("idea"));
             if (intent.getStringExtra("image") != null) {
@@ -226,6 +228,7 @@ public class AddIdeaActivity extends AppCompatActivity {
         } else {
             Log.d("IDEAS", "+++++++++++++++++++++++++++isEdit == true+++++++++++++++++++++++++");
             newidea.IdeaUid = ideaid;
+            newidea.isFavourite=isFavourite;
             new UpdateIdeaAsyncTask().execute(newidea);
         }
 

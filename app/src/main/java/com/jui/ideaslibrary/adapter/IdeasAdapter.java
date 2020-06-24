@@ -14,6 +14,7 @@
 package com.jui.ideaslibrary.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jui.ideaslibrary.AddIdeaActivity;
 import com.jui.ideaslibrary.R;
 import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.util.Util;
@@ -154,6 +156,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         ImageView ideaimage;
         TextView problem;
         ImageView starbutton;
+        ImageView editbutton;
         CardView item;
 
 
@@ -168,6 +171,8 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             problem.setOnClickListener(this);
             starbutton=itemView.findViewById(R.id.favStar);
             starbutton.setOnClickListener(this);
+            editbutton=itemView.findViewById(R.id.editicon);
+            editbutton.setOnClickListener(this);
 
             item.setOnLongClickListener(this);
 
@@ -176,48 +181,54 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
         @Override
         public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.ideaImage:
+                    if (ideaimage.getScaleType()!= ImageView.ScaleType.FIT_XY){
+                        ideaimage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                        ideaimage.setScaleType(ImageView.ScaleType.FIT_XY);
+                    }else{
+                        int pixels = (int) (200 * context.getResources().getDisplayMetrics().density);
+                        ideaimage.getLayoutParams().height = pixels;
+                        ideaimage.setScaleType(ImageView.ScaleType.CENTER);
+                    }
 
-            int clickedposition=getAdapterPosition();
-            if (v.getId()==R.id.ideaImage){
-                if (ideaimage.getScaleType()!= ImageView.ScaleType.FIT_XY){
-                    ideaimage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                    ideaimage.setScaleType(ImageView.ScaleType.FIT_XY);
-                }else{
-                    int pixels = (int) (200 * context.getResources().getDisplayMetrics().density);
-                    ideaimage.getLayoutParams().height = pixels;
-                    ideaimage.setScaleType(ImageView.ScaleType.CENTER);
-                }
+                    break;
+                case R.id.favStar:
+
+                    int ideaid=forSearchList.get(getAdapterPosition()).IdeaUid;
+                    if (forSearchList.get(getAdapterPosition()).getIsFavourite()==0){
+                        starbutton.setImageResource(R.drawable.favstar);
+                        ivm.updateFavIdea(1,ideaid);
+                        Log.d("IDEAS","*************************************************add favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
+                                forSearchList.get(getAdapterPosition()).getIsFavourite());
+
+                    }else{
+                        starbutton.setImageResource(R.drawable.blankstar);
+                        ivm.updateFavIdea(0,ideaid);
+                        Log.d("IDEAS","*************************************************remove favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
+                                forSearchList.get(getAdapterPosition()).getIsFavourite());
+                    }
+
+                    break;
+                case R.id.editicon:
+                    Intent intent=new Intent(context, AddIdeaActivity.class);
+                    intent.putExtra("IDEA_ID",forSearchList.get(getAdapterPosition()).IdeaUid);
+
+                    intent.putExtra("problem",forSearchList.get(getAdapterPosition()).problemStatement);
+                    intent.putExtra("idea",forSearchList.get(getAdapterPosition()).thoughts);
+                    intent.putExtra("location",forSearchList.get(getAdapterPosition()).location);
+                    intent.putExtra("image",forSearchList.get(getAdapterPosition()).imageUrl);
+                    intent.putExtra("isFavourite",forSearchList.get(getAdapterPosition()).isFavourite);
+                    context.startActivity(intent);
+                    break;
+
+
+
+
+
 
             }
 
-            if (v.getId()==R.id.problem){
-                Log.d("IDEAS","*************************************************CLICKED ON "+ forSearchList.get(getAdapterPosition()).problemStatement);
-            }
-
-            if (v.getId()==R.id.favStar){
-
-                int ideaid=forSearchList.get(getAdapterPosition()).IdeaUid;
-                if (forSearchList.get(getAdapterPosition()).getIsFavourite()==0){
-                    starbutton.setImageResource(R.drawable.favstar);
-                    ivm.updateFavIdea(1,ideaid);
-                    Log.d("IDEAS","*************************************************add favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
-                            forSearchList.get(getAdapterPosition()).getIsFavourite());
-
-                }else{
-                    starbutton.setImageResource(R.drawable.blankstar);
-                    ivm.updateFavIdea(0,ideaid);
-                    Log.d("IDEAS","*************************************************remove favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
-                            forSearchList.get(getAdapterPosition()).getIsFavourite());
-                }
-
-
-
-            }
-//
-//
-//            if (listener!=null) {
-//                listener.onListItemClick(ideaslist.get(clickedposition));
-//            }
 
             return;
 
