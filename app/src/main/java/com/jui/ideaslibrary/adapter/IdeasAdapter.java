@@ -1,3 +1,16 @@
+/*
+ * Copyright 2020 Quek Rui. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.jui.ideaslibrary.adapter;
 
 import android.content.Context;
@@ -11,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,9 +44,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHolder>{
+public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHolder> implements Filterable {
 
     private Context context;
 
@@ -40,20 +56,38 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
     private ArrayList<IdeaEntry> ideaslist;  //we want to display this list
 
 
-    private ListItemClickListener listener;
 
 
-    public interface ListItemClickListener {
-        void onListItemClick(IdeaEntry idea);
-        void onLongItemClick(int clickedItemIndex);
-
-        //Todo: Long click not working
-
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
     }
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<IdeaEntry> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(ideaslist);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (IdeaEntry item : ideaslist) {
+                    if (item.problemStatement.toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            ideaslist.clear();
+            ideaslist.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
-    public void setItemClickListener(ListItemClickListener listener){
-        this.listener=listener;
-    }
 
 
     public IdeasAdapter(ArrayList<IdeaEntry> ideaEntries){   //take arraylist to store
@@ -121,13 +155,14 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         ImageView ideaimage;
         TextView problem;
         ImageView starbutton;
-
+        CardView item;
 
 
 
         public IdeaViewHolder(@NonNull View itemView) {  //allow us to instantiate class n call its supertype
             super(itemView);
             this.itemView=itemView; //store view element inside viewholder
+            item=itemView.findViewById(R.id.ideaitemLayout);
             ideaimage=itemView.findViewById(R.id.ideaImage);
             ideaimage.setOnClickListener(this);
             problem=itemView.findViewById(R.id.problem);
@@ -135,8 +170,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             starbutton=itemView.findViewById(R.id.favStar);
             starbutton.setOnClickListener(this);
 
-            itemView.setOnLongClickListener(this);
-//            itemView.setOnClickListener(this);
+            item.setOnLongClickListener(this);
 
 
         }
@@ -155,7 +189,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             }
 
             if (v.getId()==R.id.favStar){
-                starbutton.setImageResource(R.drawable.ic_sharp_star_24);
+                starbutton.setImageResource(R.drawable.favstar);
             }
 //
 //
@@ -169,7 +203,11 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
         @Override
         public boolean onLongClick(View v) {
-            return false;
+            if (v.getId()==R.id.ideaitemLayout){
+                Log.d("IDEAS","+++++++++++++Long clicked on "+ideaslist.get(getAdapterPosition()).problemStatement);
+
+            }
+            return true;
         }
     }
 

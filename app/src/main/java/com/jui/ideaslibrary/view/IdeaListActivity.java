@@ -1,3 +1,16 @@
+/*
+ * Copyright 2020 Quek Rui. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.jui.ideaslibrary.view;
 
 import android.content.Intent;
@@ -6,7 +19,9 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 
@@ -65,10 +80,18 @@ public class IdeaListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_idea_list);
         ButterKnife.bind(this);
         final Toolbar mToolbar=(Toolbar)findViewById(R.id.toolbar);
+        mToolbar.setNavigationIcon(R.drawable.backnavicon);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(IdeaListActivity.this,MainActivity.class));
+            }
+        });
         setSupportActionBar(mToolbar);
 
         CollapsingToolbarLayout ctl=findViewById(R.id.collapsing_toolbar_layout);
         ctl.setTitle("My Brilliant Ideas");
+
 
         //ctl.setCollapsedTitleTextColor(getResources().getColor(R.color.colorAccent));
 
@@ -148,7 +171,27 @@ public class IdeaListActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.listactivitymenu,menu);
         hideOption(R.id.action_add);
 
-        return super.onCreateOptionsMenu(menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ideasAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+
+        //return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override

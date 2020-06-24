@@ -1,3 +1,16 @@
+/*
+ * Copyright 2020 Quek Rui. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.jui.ideaslibrary;
 
 import android.Manifest;
@@ -122,21 +135,22 @@ public class AddIdeaActivity extends AppCompatActivity {
             setTitle("Add New Idea");
 
         }
-
+//Todo: add progress dialog when fetch llocation
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 String add = locationClass.getAddress(location);
-                if (add == null) {
+                if (add == null || add.trim().length()==0) {
                     Snackbar.make(constraintlayout, "Error detecting location, please enter manually", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
                     locationAns.setTextSize(10);
+                    locationClass.removelistener();
+                    Snackbar.make(constraintlayout, "Location fetched. Location detection switched off", Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
                 }
                 locationAns.setText(add);
-                locationClass.removelistener();
-                Snackbar.make(constraintlayout, "Location fetched. Location detection switched off", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+
 
             }
 
