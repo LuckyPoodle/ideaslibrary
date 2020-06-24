@@ -14,12 +14,15 @@
 package com.jui.ideaslibrary.viewmodel;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.jui.ideaslibrary.AddIdeaActivity;
 import com.jui.ideaslibrary.model.IdeaDatabase;
 import com.jui.ideaslibrary.model.IdeaEntry;
+import com.jui.ideaslibrary.view.IdeaListActivity;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -31,6 +34,7 @@ import androidx.lifecycle.MutableLiveData;
 
 public class IdeaViewModel  extends AndroidViewModel {
     public MutableLiveData <List<IdeaEntry>> ideasListVM =new MutableLiveData<List<IdeaEntry>>();
+    //public MutableLiveData <List<IdeaEntry>> favouriteIdeas =new MutableLiveData<List<IdeaEntry>>();
     //we want to specify the type the mutablelivedata handle
     public MutableLiveData<Boolean> loadingerror=new MutableLiveData<Boolean>();
     //info if info is being loaded in background
@@ -40,8 +44,12 @@ public class IdeaViewModel  extends AndroidViewModel {
 
     private AsyncTask<Void,Void,List<IdeaEntry>>RetrieveIdeasTask;
     private AsyncTask<Void,Void,Integer> GetCountTask;
+    private AsyncTask<Void,Void,List<IdeaEntry>>RetrieveFavouriteIdeasTask;
 
-
+    public void getFavourites(){
+        RetrieveFavouriteIdeasTask =new RetrieveFavouriteIdeasTask();
+        RetrieveFavouriteIdeasTask.execute();
+    }
 
 
     public void refresh(){
@@ -108,6 +116,25 @@ public class IdeaViewModel  extends AndroidViewModel {
         }
     }
 
+    private class RetrieveFavouriteIdeasTask extends AsyncTask<Void,Void, List<IdeaEntry>> {
+
+        @Override
+        protected List<IdeaEntry> doInBackground(Void... voids) {
+            return IdeaDatabase.getInstance(getApplication()).ideaDAO().getFavIdeas();
+
+        }
+
+        //foreground thread
+        @Override
+        protected void onPostExecute(List<IdeaEntry> ideas){
+
+            ideasRetrieved(ideas);
+            Toast.makeText(getApplication(),"favourite ideas retrieved from DATABASE",Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+
     private class GetCountTask extends AsyncTask<Void,Void,Integer> {
 
         @Override
@@ -128,6 +155,16 @@ public class IdeaViewModel  extends AndroidViewModel {
         }
     }
 
+    public void updateFavIdea(int fav, int id) {
+        Executor myExecutor = Executors.newSingleThreadExecutor();
+        myExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                IdeaDatabase.getInstance(getApplication()).ideaDAO().updateFav(fav,id);
+                System.out.println(IdeaDatabase.getInstance(getApplication()).ideaDAO().getFavIdeas());
+            }
+        });
+    }
 
 
 

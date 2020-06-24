@@ -42,6 +42,13 @@ public class IdeaEntry {
     @ColumnInfo(name="notes")
     public String notes;
 
+    public Integer getIsFavourite() {
+        return isFavourite;
+    }
+
+    public void setIsFavourite(Integer isFavourite) {
+        this.isFavourite = isFavourite;
+    }
 
 //    @ColumnInfo(name="datetime")
 //    @TypeConverters({TimestampConverter.class})

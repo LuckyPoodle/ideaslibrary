@@ -30,9 +30,14 @@
         android:title="@string/home"
         app:showAsAction="ifRoom"></item>
 
+
     <item android:id="@+id/showFavourites"
         android:title="@string/showfavourite"
         app:showAsAction="never"></item>
+    <item android:id="@+id/showAll"
+        android:title="@string/showAllIdeas"
+        app:showAsAction="never"></item>
+
 
 
 

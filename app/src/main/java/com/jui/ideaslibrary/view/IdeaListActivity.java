@@ -132,7 +132,7 @@ public class IdeaListActivity extends AppCompatActivity {
 
 
         observeViewModel();
-        ideasAdapter =new IdeasAdapter(new ArrayList<>());
+        ideasAdapter =new IdeasAdapter(this,new ArrayList<>());
 
         ideasList.setLayoutManager(new LinearLayoutManager(this));
         ideasList.setAdapter(ideasAdapter);
@@ -199,6 +199,19 @@ public class IdeaListActivity extends AppCompatActivity {
                 startActivity(new Intent(IdeaListActivity.this, MainActivity.class));
                 break;
 
+            case R.id.showFavourites:
+                getFavourites();
+                break;
+            case  R.id.showAll:
+                ideaViewModel.refresh();
+                observeViewModel();
+                ideasAdapter =new IdeasAdapter(this,new ArrayList<>());
+
+                ideasList.setLayoutManager(new LinearLayoutManager(this));
+                ideasList.setAdapter(ideasAdapter);
+                break;
+
+
 
         }
 
@@ -246,6 +259,21 @@ public class IdeaListActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void getFavourites(){
+        ideaViewModel.getFavourites();
+        ideaViewModel.ideasListVM.observe(this, new Observer<List<IdeaEntry>>() {
+            @Override
+            public void onChanged(List<IdeaEntry> ideas) {
+                if (ideas!=null && ideas instanceof List){
+                    ideasList.setVisibility(View.VISIBLE);
+                    //loadingView.setVisibility(View.GONE);
+                    userIdealist=ideas;
+                    ideasAdapter.updateIdeasList(userIdealist);
+                }
+            }
+        });
     }
 
 

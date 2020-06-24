@@ -27,25 +27,31 @@ import android.widget.TextView;
 import com.jui.ideaslibrary.R;
 import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.util.Util;
+import com.jui.ideaslibrary.view.IdeaListActivity;
+import com.jui.ideaslibrary.viewmodel.IdeaViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHolder> implements Filterable {
 
     private Context context;
-
+    IdeaViewModel ideaViewModel;
     private List<IdeaEntry> fullIdeasList;
     private List<IdeaEntry> forSearchList;
+    private IdeaViewModel ivm;
 
 
-    public IdeasAdapter(List<IdeaEntry> ideaEntries){   //take arraylist to store
-
+    public IdeasAdapter(Context cxt,List<IdeaEntry> ideaEntries){   //take arraylist to store
+        this.context=cxt;
         this.forSearchList=ideaEntries;
+        ivm= ViewModelProviders.of((IdeaListActivity) context).get(IdeaViewModel.class);
+
         fullIdeasList =new ArrayList<>(forSearchList);
 
     }
@@ -117,6 +123,11 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         problem.setText(forSearchList.get(position).problemStatement);
         thought.setText(forSearchList.get(position).thoughts);
         location.setText(forSearchList.get(position).location);
+        ImageView star=holder.itemView.findViewById(R.id.favStar);
+        int isideafavourite=forSearchList.get(position).isFavourite;
+        if (isideafavourite ==1){
+            star.setImageResource(R.drawable.favstar);
+        }
 
 
 
@@ -173,11 +184,27 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             }
 
             if (v.getId()==R.id.problem){
-                Log.d("IDEAS","*************************************************CLICKED ON "+ fullIdeasList.get(getAdapterPosition()).problemStatement);
+                Log.d("IDEAS","*************************************************CLICKED ON "+ forSearchList.get(getAdapterPosition()).problemStatement);
             }
 
             if (v.getId()==R.id.favStar){
-                starbutton.setImageResource(R.drawable.favstar);
+
+                int ideaid=forSearchList.get(getAdapterPosition()).IdeaUid;
+                if (forSearchList.get(getAdapterPosition()).getIsFavourite()==0){
+                    starbutton.setImageResource(R.drawable.favstar);
+                    ivm.updateFavIdea(1,ideaid);
+                    Log.d("IDEAS","*************************************************add favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
+                            forSearchList.get(getAdapterPosition()).getIsFavourite());
+
+                }else{
+                    starbutton.setImageResource(R.drawable.blankstar);
+                    ivm.updateFavIdea(0,ideaid);
+                    Log.d("IDEAS","*************************************************remove favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
+                            forSearchList.get(getAdapterPosition()).getIsFavourite());
+                }
+
+
+
             }
 //
 //

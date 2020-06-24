@@ -48,6 +48,11 @@ public interface IdeaDAO {
     @Query("SELECT COUNT(IdeaUid) FROM ideaentry")
     int getRowCount();
 
+    @Query("UPDATE ideaentry SET isFavourite=:fav WHERE IdeaUid= :id")
+    void updateFav(int fav, int id);
+
+
+
     @Query("SELECT * FROM ideaentry WHERE problemStatement LIKE '%'||:search||'%' OR thoughts LIKE '%'||:search||'%'")
     List<IdeaEntry> getSearchedIdeas(String search);
 
