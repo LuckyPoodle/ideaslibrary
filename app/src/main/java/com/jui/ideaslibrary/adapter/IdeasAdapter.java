@@ -14,14 +14,8 @@
 package com.jui.ideaslibrary.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
-import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -30,16 +24,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jui.ideaslibrary.MainActivity;
 import com.jui.ideaslibrary.R;
 import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.util.Util;
-import com.jui.ideaslibrary.view.IdeaListActivity;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +39,27 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
     private Context context;
 
+    private List<IdeaEntry> fullIdeasList;
+    private List<IdeaEntry> forSearchList;
 
 
-    private ArrayList<IdeaEntry> ideaslist;  //we want to display this list
+    public IdeasAdapter(List<IdeaEntry> ideaEntries){   //take arraylist to store
 
+        this.forSearchList=ideaEntries;
+        fullIdeasList =new ArrayList<>(forSearchList);
+
+    }
+
+
+    //a method to update this list
+    public void updateIdeasList(List<IdeaEntry> newIdeas){
+        forSearchList.clear();
+        forSearchList.addAll(newIdeas);
+        fullIdeasList =new ArrayList<>(forSearchList);
+        notifyDataSetChanged();
+        Log.d("IDEAS","+++++++++++++++++++++++++++++++++++forSearchList"+forSearchList);
+        Log.d("IDEAS","+++++++++++++++++++++++++++++++++++fullIdeasList"+fullIdeasList);
+    }
 
 
 
@@ -67,10 +72,10 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         protected FilterResults performFiltering(CharSequence constraint) {
             List<IdeaEntry> filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(ideaslist);
+                filteredList.addAll(fullIdeasList);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (IdeaEntry item : ideaslist) {
+                for (IdeaEntry item : fullIdeasList) {
                     if (item.problemStatement.toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
@@ -82,26 +87,14 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         }
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            ideaslist.clear();
-            ideaslist.addAll((List) results.values);
+            forSearchList.clear();
+            forSearchList.addAll((ArrayList) results.values);
             notifyDataSetChanged();
         }
     };
 
 
 
-    public IdeasAdapter(ArrayList<IdeaEntry> ideaEntries){   //take arraylist to store
-        this.ideaslist=ideaEntries;
-    }
-
-
-
-    //a method to update this list
-    public void updateIdeasList(List<IdeaEntry> newIdeas){
-        ideaslist.clear();
-        ideaslist.addAll(newIdeas);
-        notifyDataSetChanged();
-    }
 
 
     @NonNull
@@ -121,30 +114,25 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         TextView timestamp=holder.itemView.findViewById(R.id.timestamp);
         TextView location=holder.itemView.findViewById(R.id.locationText);
 
-        problem.setText(ideaslist.get(position).problemStatement);
-        thought.setText(ideaslist.get(position).thoughts);
-        location.setText(ideaslist.get(position).location);
+        problem.setText(forSearchList.get(position).problemStatement);
+        thought.setText(forSearchList.get(position).thoughts);
+        location.setText(forSearchList.get(position).location);
 
 
 
-        timestamp.setText(ideaslist.get(position).timestamp.toString());
-        if (ideaslist.get(position).imageUrl!=null){
+        timestamp.setText(forSearchList.get(position).timestamp.toString());
+        if (forSearchList.get(position).imageUrl!=null){
             image.setVisibility(View.VISIBLE);
-            Util.loadImage(image,ideaslist.get(position).imageUrl, Util.getProgressDrawable(image.getContext()));
+            Util.loadImage(image,forSearchList.get(position).imageUrl, Util.getProgressDrawable(image.getContext()));
         }else{
 
         }
-
-
-
-
-
 
     }
 
     @Override
     public int getItemCount() {
-        return ideaslist.size();
+        return forSearchList.size();
     }
 
 
@@ -185,7 +173,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             }
 
             if (v.getId()==R.id.problem){
-                Log.d("IDEAS","*************************************************CLICKED ON "+ideaslist.get(getAdapterPosition()).problemStatement);
+                Log.d("IDEAS","*************************************************CLICKED ON "+ fullIdeasList.get(getAdapterPosition()).problemStatement);
             }
 
             if (v.getId()==R.id.favStar){
@@ -204,7 +192,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         @Override
         public boolean onLongClick(View v) {
             if (v.getId()==R.id.ideaitemLayout){
-                Log.d("IDEAS","+++++++++++++Long clicked on "+ideaslist.get(getAdapterPosition()).problemStatement);
+                Log.d("IDEAS","+++++++++++++Long clicked on "+ forSearchList.get(getAdapterPosition()).problemStatement);
 
             }
             return true;

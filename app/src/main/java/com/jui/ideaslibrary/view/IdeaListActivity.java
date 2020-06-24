@@ -69,8 +69,6 @@ public class IdeaListActivity extends AppCompatActivity {
 
     private Menu menu;
 
-    ActionMode actionMode;
-
     AdView mAdView;
 
 
@@ -129,20 +127,15 @@ public class IdeaListActivity extends AppCompatActivity {
         });
 
 
-
-
-
-        ideasAdapter =new IdeasAdapter(new ArrayList<>());
-        //ideasAdapter.setItemClickListener(this);
-
-
         ideaViewModel = ViewModelProviders.of(this).get(IdeaViewModel.class);
         ideaViewModel.refresh();
 
-        ideasList.setLayoutManager(new LinearLayoutManager(this));
-        ideasList.setAdapter(ideasAdapter);
 
         observeViewModel();
+        ideasAdapter =new IdeasAdapter(new ArrayList<>());
+
+        ideasList.setLayoutManager(new LinearLayoutManager(this));
+        ideasList.setAdapter(ideasAdapter);
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
