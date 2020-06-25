@@ -15,6 +15,7 @@ package com.jui.ideaslibrary.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +24,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.google.android.gms.ads.AdRequest;
@@ -46,6 +46,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -71,8 +72,10 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     private Menu menu;
 
     AdView mAdView;
-    ActionMode actionMode;
+    ActionMode mActionMode;
+    private ActionMode.Callback mActionModeCallback;
     public static List<Integer> idsToDelete=new ArrayList<>();
+
 
 
     @Override
@@ -133,6 +136,55 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+
+
+        mActionModeCallback=new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                mode.getMenuInflater().inflate(R.menu.contextual_menu, menu);
+                mode.setTitle("Delete Selected");
+                return false;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch(item.getItemId()){
+
+                    case R.id.menudelete:
+                        ideasAdapter.deleteSelectedIds(idsToDelete);
+
+
+                        mode.finish();
+                        makeListActivity();
+
+                        return true;
+
+
+                }
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                mActionMode=null;
+
+            }
+        };
+
+
+
+
+
+
+
+
+
     }
 
     private void makeListActivity(){
@@ -202,11 +254,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
                 showOption(R.id.showAll);
                 break;
             case  R.id.showAll:
-                ideaViewModel.refresh();
-                observeViewModel();
-                ideasAdapter =new IdeasAdapter(this,new ArrayList<>());
-                ideasList.setLayoutManager(new LinearLayoutManager(this));
-                ideasList.setAdapter(ideasAdapter);
+                makeListActivity();
                 hideOption(R.id.showAll);
                 break;
 
@@ -278,8 +326,12 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     @Override
     public void onListLongItemClick(int clickedItemIndex) {
         idsToDelete.add(clickedItemIndex);
+        if (mActionMode ==null){
 
-        actionMode = IdeaListActivity.this.startActionMode(new ContextualCallback());
+            mActionMode = IdeaListActivity.this.startActionMode(new ContextualCallback());
+
+        }
+
 
     }
 
@@ -288,33 +340,35 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
 
 
         @Override
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            //when button is clicked
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            //inflate the contextual menu which is passed to the mode
 
-            actionMode.getMenuInflater().inflate(R.menu.contextual_menu, menu);
+            mode.getMenuInflater().inflate(R.menu.contextual_menu, menu);
 
             return true;
         }
 
         @Override
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-
-            actionMode.setTitle("Delete Selected");
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            //menu inflated
+            mode.setTitle("Delete Selected");
 
             return false;
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem item) {
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
             switch(item.getItemId()){
 
                 case R.id.menudelete:
                     ideasAdapter.deleteSelectedIds(idsToDelete);
-                    actionMode.finish();
+
+
+                    mode.finish();
                     makeListActivity();
 
-                    break;
+                    return true;
 
 
             }
@@ -325,9 +379,9 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
 
+            makeListActivity();
+            mActionMode=null;
 
-
-            //Action Mode is completed
 
         }
     }

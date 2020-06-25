@@ -24,6 +24,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jui.ideaslibrary.AddIdeaActivity;
 import com.jui.ideaslibrary.R;
@@ -188,6 +189,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             editbutton=itemView.findViewById(R.id.editicon);
             editbutton.setOnClickListener(this);
 
+            item.setOnClickListener(this);
 
             item.setOnLongClickListener(this);
 
@@ -200,6 +202,8 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             switch (v.getId()) {
                 case R.id.ideaitemLayout:
                     int selected=forSearchList.get(getAdapterPosition()).IdeaUid;
+                    Toast.makeText(context,"the alpha is "+item.getAlpha(),Toast.LENGTH_SHORT).show();
+
                     if (item.getAlpha()==0.7f){
                         item.setAlpha(1.0f);
                         for (int i=0;i<IdeaListActivity.idsToDelete.size();i++){
@@ -209,6 +213,9 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
                         }
 
                     }
+
+                    break;
+
                 case R.id.ideaImage:
                     if (ideaimage.getScaleType()!= ImageView.ScaleType.FIT_XY){
                         ideaimage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
@@ -226,12 +233,14 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
                     if (forSearchList.get(getAdapterPosition()).getIsFavourite()==0){
                         starbutton.setImageResource(R.drawable.favstar);
                         ivm.updateFavIdea(1,ideaid);
+                        ivm.refresh();
                         Log.d("IDEAS","*************************************************add favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
                                 forSearchList.get(getAdapterPosition()).getIsFavourite());
 
                     }else{
                         starbutton.setImageResource(R.drawable.blankstar);
                         ivm.updateFavIdea(0,ideaid);
+                        ivm.refresh();
 
                         Log.d("IDEAS","*************************************************remove favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
                                 forSearchList.get(getAdapterPosition()).getIsFavourite());
@@ -260,10 +269,6 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
         @Override
         public boolean onLongClick(View v) {
-//            if (v.getId()==R.id.ideaitemLayout){
-//                Log.d("IDEAS","+++++++++++++Long clicked on "+ forSearchList.get(getAdapterPosition()).problemStatement);
-//
-//            }
 
             if (listener!=null) {
                 Log.d("IDEAS","**********************LONG CLICKED***************************");
