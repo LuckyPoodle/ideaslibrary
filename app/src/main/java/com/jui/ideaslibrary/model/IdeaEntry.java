@@ -13,16 +13,9 @@
 
 package com.jui.ideaslibrary.model;
 
-import com.google.gson.annotations.SerializedName;
-import com.jui.ideaslibrary.util.TimestampConverter;
-
-import java.util.ArrayList;
-import java.util.Date;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 @Entity(tableName = "ideaentry")
 public class IdeaEntry {

@@ -13,8 +13,13 @@
 
 package com.jui.ideaslibrary;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +32,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.jui.ideaslibrary.view.IdeaListActivity;
 import com.jui.ideaslibrary.viewmodel.IdeaViewModel;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -95,4 +101,26 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settingaction:
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                break;
+
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

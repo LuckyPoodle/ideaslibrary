@@ -15,7 +15,6 @@ package com.jui.ideaslibrary.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +23,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -46,7 +44,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -66,6 +63,8 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     ProgressBar loadingView;
 
     List<IdeaEntry> userIdealist;
+    @BindView(R.id.noideasyet)
+    TextView noideasyet;
 
     private IdeasAdapter ideasAdapter;
 
@@ -74,20 +73,18 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     AdView mAdView;
     ActionMode mActionMode;
     private ActionMode.Callback mActionModeCallback;
-    public static List<Integer> idsToDelete=new ArrayList<>();
-
-
+    public static List<Integer> idsToDelete = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_idea_list);
         ButterKnife.bind(this);
-        final Toolbar mToolbar=(Toolbar)findViewById(R.id.toolbar);
+        final Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
 
-        CollapsingToolbarLayout ctl=findViewById(R.id.collapsing_toolbar_layout);
+        CollapsingToolbarLayout ctl = findViewById(R.id.collapsing_toolbar_layout);
         ctl.setTitle("My Brilliant Ideas");
 
 
@@ -95,7 +92,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(IdeaListActivity.this, AddIdeaActivity.class);
+                Intent intent = new Intent(IdeaListActivity.this, AddIdeaActivity.class);
                 startActivity(intent);
 
             }
@@ -104,7 +101,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         makeListActivity();
 
 
-        AppBarLayout mAppBarLayout=(AppBarLayout)findViewById(R.id.app_bar);
+        AppBarLayout mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = false;
             int scrollRange = -1;
@@ -126,8 +123,6 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         });
 
 
-
-
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -139,62 +134,32 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
 
 
 
-        mActionModeCallback=new ActionMode.Callback() {
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                mode.getMenuInflater().inflate(R.menu.contextual_menu, menu);
-                mode.setTitle("Delete Selected");
-                return false;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch(item.getItemId()){
-
-                    case R.id.menudelete:
-                        ideasAdapter.deleteSelectedIds(idsToDelete);
-
-
-                        mode.finish();
-                        makeListActivity();
-
-                        return true;
-
-
-                }
-                return false;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                mActionMode=null;
-
-            }
-        };
-
-
-
-
-
-
-
-
 
     }
 
-    private void makeListActivity(){
+    private void makeListActivity() {
         ideaViewModel.refresh();
         observeViewModel();
-        ideasAdapter =new IdeasAdapter(this,new ArrayList<>());
+        ideasAdapter = new IdeasAdapter(this, new ArrayList<>());
         ideasAdapter.setItemLongClickListener(this);
 
         ideasList.setLayoutManager(new LinearLayoutManager(this));
         ideasList.setAdapter(ideasAdapter);
+
+        ideaViewModel.getCount();
+        ideaViewModel.count.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer ideacount) {
+
+                if (ideacount == 0) {
+                    noideasyet.setVisibility(View.VISIBLE);
+
+                }
+
+
+            }
+        });
+
 
     }
 
@@ -211,8 +176,8 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.menu=menu;
-        getMenuInflater().inflate(R.menu.listactivitymenu,menu);
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.listactivitymenu, menu);
         hideOption(R.id.action_add);
         hideOption(R.id.showAll);
 
@@ -253,17 +218,13 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
                 getFavourites();
                 showOption(R.id.showAll);
                 break;
-            case  R.id.showAll:
+            case R.id.showAll:
                 makeListActivity();
                 hideOption(R.id.showAll);
                 break;
 
 
-
         }
-
-
-
 
 
         return super.onOptionsItemSelected(item);
@@ -274,10 +235,10 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         ideaViewModel.ideasListVM.observe(this, new Observer<List<IdeaEntry>>() {
             @Override
             public void onChanged(List<IdeaEntry> ideas) {
-                if (ideas!=null && ideas instanceof List){
+                if (ideas != null && ideas instanceof List) {
                     ideasList.setVisibility(View.VISIBLE);
                     //loadingView.setVisibility(View.GONE);
-                    userIdealist=ideas;
+                    userIdealist = ideas;
                     ideasAdapter.updateIdeasList(userIdealist);
                 }
             }
@@ -285,8 +246,8 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         ideaViewModel.loadingerror.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isError) {
-                if (isError!=null && isError instanceof Boolean){
-                    listError.setVisibility(isError? View.VISIBLE : View.GONE);
+                if (isError != null && isError instanceof Boolean) {
+                    listError.setVisibility(isError ? View.VISIBLE : View.GONE);
                 }
             }
         });
@@ -294,9 +255,9 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         ideaViewModel.loading.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isLoading) {
-                if (isLoading!=null && isLoading instanceof Boolean){
-                    loadingView.setVisibility(isLoading? View.VISIBLE : View.GONE);
-                    if (isLoading){
+                if (isLoading != null && isLoading instanceof Boolean) {
+                    loadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+                    if (isLoading) {
                         listError.setVisibility(View.GONE);
                         ideasList.setVisibility(View.GONE);
                     }
@@ -308,15 +269,15 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
 
     }
 
-    private void getFavourites(){
+    private void getFavourites() {
         ideaViewModel.getFavourites();
         ideaViewModel.ideasListVM.observe(this, new Observer<List<IdeaEntry>>() {
             @Override
             public void onChanged(List<IdeaEntry> ideas) {
-                if (ideas!=null && ideas instanceof List){
+                if (ideas != null && ideas instanceof List) {
                     ideasList.setVisibility(View.VISIBLE);
                     //loadingView.setVisibility(View.GONE);
-                    userIdealist=ideas;
+                    userIdealist = ideas;
                     ideasAdapter.updateIdeasList(userIdealist);
                 }
             }
@@ -326,7 +287,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     @Override
     public void onListLongItemClick(int clickedItemIndex) {
         idsToDelete.add(clickedItemIndex);
-        if (mActionMode ==null){
+        if (mActionMode == null) {
 
             mActionMode = IdeaListActivity.this.startActionMode(new ContextualCallback());
 
@@ -336,7 +297,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     }
 
 
-    class ContextualCallback implements ActionMode.Callback{
+    class ContextualCallback implements ActionMode.Callback {
 
 
         @Override
@@ -359,7 +320,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
-            switch(item.getItemId()){
+            switch (item.getItemId()) {
 
                 case R.id.menudelete:
                     ideasAdapter.deleteSelectedIds(idsToDelete);
@@ -380,7 +341,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         public void onDestroyActionMode(ActionMode actionMode) {
 
             makeListActivity();
-            mActionMode=null;
+            mActionMode = null;
 
 
         }
