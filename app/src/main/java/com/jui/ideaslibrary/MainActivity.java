@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView emoticon;
 
     AdView mAdView;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+
+
     }
 
     @OnClick({R.id.bulb, R.id.listimage})
@@ -114,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.settingaction:
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                break;
+            case R.id.watchAdaction:
+                startActivity(new Intent(MainActivity.this,WatchAdActivity.class));
                 break;
 
 

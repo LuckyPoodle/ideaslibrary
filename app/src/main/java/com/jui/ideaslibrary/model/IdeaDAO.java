@@ -39,9 +39,6 @@ public interface IdeaDAO {
     @Update
     void updateIdea(IdeaEntry m);
 
-//    @Delete
-//    void deleteIdea (IdeaEntry m);
-
     @Query("DELETE FROM ideaentry WHERE IdeaUid= :id")
     void deleteIdea(int id);
 

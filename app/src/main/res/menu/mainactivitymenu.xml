@@ -17,6 +17,10 @@
     <item android:id="@+id/settingaction"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/setting"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/watchAdaction"
+        android:title="Gain inspiration"
+        app:showAsAction="never"></item>
 
 </menu>

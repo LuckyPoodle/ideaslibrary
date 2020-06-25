@@ -78,8 +78,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         forSearchList.addAll(newIdeas);
         fullIdeasList =new ArrayList<>(forSearchList);
         notifyDataSetChanged();
-        Log.d("IDEAS","+++++++++++++++++++++++++++++++++++forSearchList"+forSearchList);
-        Log.d("IDEAS","+++++++++++++++++++++++++++++++++++fullIdeasList"+fullIdeasList);
+
     }
 
 
@@ -234,16 +233,13 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
                         starbutton.setImageResource(R.drawable.favstar);
                         ivm.updateFavIdea(1,ideaid);
                         ivm.refresh();
-                        Log.d("IDEAS","*************************************************add favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
-                                forSearchList.get(getAdapterPosition()).getIsFavourite());
+
 
                     }else{
                         starbutton.setImageResource(R.drawable.blankstar);
                         ivm.updateFavIdea(0,ideaid);
                         ivm.refresh();
 
-                        Log.d("IDEAS","*************************************************remove favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
-                                forSearchList.get(getAdapterPosition()).getIsFavourite());
                     }
 
                     break;
@@ -271,7 +267,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         public boolean onLongClick(View v) {
 
             if (listener!=null) {
-                Log.d("IDEAS","**********************LONG CLICKED***************************");
+
                 item.setAlpha(0.7f);
                 listener.onListLongItemClick(forSearchList.get(getAdapterPosition()).IdeaUid);
             }

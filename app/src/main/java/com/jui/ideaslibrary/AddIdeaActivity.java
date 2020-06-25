@@ -298,6 +298,7 @@ Part of the Storage Access Framework includes the concept that a provider of con
                 requestLocationPermission();
             }
         }
+        progressBar.setVisibility(View.GONE);
         getLocation();
     }
 
@@ -343,17 +344,22 @@ Part of the Storage Access Framework includes the concept that a provider of con
             case LOCATION_REQUESTCODE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d("PERMISSION", "LOCATION ACCESS PERMISSION GRANTED");
+                    progressBar.setVisibility(View.GONE);
+                    Snackbar.make(constraintlayout, "Successful. Please try again", Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
+
                 } else {
+                    progressBar.setVisibility(View.GONE);
                     Log.d("PERMISSION", "LOCATION ACCESS PERMISSION NOT GRANTED");
                 }
 
 
             case GALLERYREQUESTCODE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d("PERMISSION", "GALLERY ACCESS PERMISSION GRANTED");
-                } else {
-                    Log.d("PERMISSION", "GALLERY ACCESS PERMISSION NOT GRANTED");
-                }
+//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    Log.d("PERMISSION", "GALLERY ACCESS PERMISSION GRANTED");
+//                } else {
+//                    Log.d("PERMISSION", "GALLERY ACCESS PERMISSION NOT GRANTED");
+//                }
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }

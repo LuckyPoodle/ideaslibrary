@@ -29,6 +29,7 @@
         android:id="@+id/sparkLabel"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:contentDescription="@string/sparkQn"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,6 +45,7 @@
         android:background="@drawable/input_outline"
         android:ems="10"
         android:hint="@string/sparkAns"
+        android:contentDescription="@string/sparkAns"
         />
 
     <TextView
@@ -56,6 +58,7 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/ideaQn"
         android:text="@string/ideaQn" />
 
     <EditText
@@ -68,6 +71,7 @@
         android:background="@drawable/input_outline"
         android:ems="10"
         android:hint="@string/thoughts"
+        android:contentDescription="@string/thoughts"
         android:inputType="textMultiLine"
         android:padding="15dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
@@ -87,6 +91,7 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/cameraLabel"
             android:text="@string/cameraLabel" />
 
     <ImageView
@@ -95,6 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:contentDescription="A Camera Icon"
 
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
@@ -122,6 +128,7 @@
             android:id="@+id/locationLabel"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:contentDescription="@string/locationLabel"
 
 
             android:layout_width="match_parent"
@@ -146,6 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:contentDescription="@string/locationButtonHint"
 
                 app:srcCompat="@drawable/ic_baseline_add_location_24" />
         </LinearLayout>
@@ -164,6 +172,7 @@
         android:id="@+id/saveEntryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="Save Entry"
         android:text="@string/saveButton" />
 
         <Button
@@ -172,6 +181,7 @@
             android:id="@+id/deleteEntryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="Delete Entry"
             android:text="@string/deleteButton" />
 
     </LinearLayout>
