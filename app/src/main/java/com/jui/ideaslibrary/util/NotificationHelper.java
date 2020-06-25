@@ -3,20 +3,24 @@ package com.jui.ideaslibrary.util;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.Build;
 
+import com.jui.ideaslibrary.MainActivity;
 import com.jui.ideaslibrary.R;
 
 import androidx.core.app.NotificationCompat;
 
-public class NotificationHelper extends ContextWrapper {
+public class NotificationHelper  {
     public static final String channelID = "channelID";
     public static final String channelName = "Channel Name";
     private NotificationManager mManager;
+    private Context ctx;
     public NotificationHelper(Context base) {
-        super(base);
+        this.ctx=base;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
         }
@@ -28,14 +32,17 @@ public class NotificationHelper extends ContextWrapper {
     }
     public NotificationManager getManager() {
         if (mManager == null) {
-            mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
         }
         return mManager;
     }
+
     public NotificationCompat.Builder getChannelNotification() {
-        return new NotificationCompat.Builder(getApplicationContext(), channelID)
-                .setContentTitle("Alarm!")
-                .setContentText("Your AlarmManager is working.")
+        return new NotificationCompat.Builder(ctx, channelID)
+                .setContentTitle("Have you recorded an idea?")
+                .setContentText("Write down your ideas for the day!")
+                .setContentIntent(PendingIntent.getActivity(ctx,0, new Intent(ctx, MainActivity.class),0))
+
                 .setSmallIcon(R.drawable.ideaicon);
     }
 }
