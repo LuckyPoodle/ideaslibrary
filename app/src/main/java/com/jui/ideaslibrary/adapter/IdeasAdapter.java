@@ -48,6 +48,18 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
     private List<IdeaEntry> forSearchList;
     private IdeaViewModel ivm;
 
+    private ListItemLongClickListener listener;
+
+
+
+    public interface ListItemLongClickListener {
+        void onListLongItemClick(int clickedItemIndex);
+    }
+    public void setItemLongClickListener(ListItemLongClickListener listener){
+        this.listener=listener;
+    }
+
+
 
     public IdeasAdapter(Context cxt,List<IdeaEntry> ideaEntries){   //take arraylist to store
         this.context=cxt;
@@ -68,7 +80,6 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         Log.d("IDEAS","+++++++++++++++++++++++++++++++++++forSearchList"+forSearchList);
         Log.d("IDEAS","+++++++++++++++++++++++++++++++++++fullIdeasList"+fullIdeasList);
     }
-
 
 
     @Override
@@ -148,6 +159,10 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         return forSearchList.size();
     }
 
+    public void deleteSelectedIds(List<Integer> ids){
+        ivm.deleteSelectedIdea(ids);
+    }
+
 
 
     class IdeaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener , View.OnLongClickListener{
@@ -168,13 +183,14 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             ideaimage=itemView.findViewById(R.id.ideaImage);
             ideaimage.setOnClickListener(this);
             problem=itemView.findViewById(R.id.problem);
-            problem.setOnClickListener(this);
             starbutton=itemView.findViewById(R.id.favStar);
             starbutton.setOnClickListener(this);
             editbutton=itemView.findViewById(R.id.editicon);
             editbutton.setOnClickListener(this);
 
+
             item.setOnLongClickListener(this);
+
 
 
         }
@@ -182,6 +198,17 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.ideaitemLayout:
+                    int selected=forSearchList.get(getAdapterPosition()).IdeaUid;
+                    if (item.getAlpha()==0.7f){
+                        item.setAlpha(1.0f);
+                        for (int i=0;i<IdeaListActivity.idsToDelete.size();i++){
+                            if (IdeaListActivity.idsToDelete.get(i)==selected){
+                                IdeaListActivity.idsToDelete.remove(i);
+                            }
+                        }
+
+                    }
                 case R.id.ideaImage:
                     if (ideaimage.getScaleType()!= ImageView.ScaleType.FIT_XY){
                         ideaimage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
@@ -205,6 +232,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
                     }else{
                         starbutton.setImageResource(R.drawable.blankstar);
                         ivm.updateFavIdea(0,ideaid);
+
                         Log.d("IDEAS","*************************************************remove favourite "+ forSearchList.get(getAdapterPosition()).problemStatement+" "+
                                 forSearchList.get(getAdapterPosition()).getIsFavourite());
                     }
@@ -223,10 +251,6 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
                     break;
 
 
-
-
-
-
             }
 
 
@@ -236,9 +260,15 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
         @Override
         public boolean onLongClick(View v) {
-            if (v.getId()==R.id.ideaitemLayout){
-                Log.d("IDEAS","+++++++++++++Long clicked on "+ forSearchList.get(getAdapterPosition()).problemStatement);
+//            if (v.getId()==R.id.ideaitemLayout){
+//                Log.d("IDEAS","+++++++++++++Long clicked on "+ forSearchList.get(getAdapterPosition()).problemStatement);
+//
+//            }
 
+            if (listener!=null) {
+                Log.d("IDEAS","**********************LONG CLICKED***************************");
+                item.setAlpha(0.7f);
+                listener.onListLongItemClick(forSearchList.get(getAdapterPosition()).IdeaUid);
             }
             return true;
         }

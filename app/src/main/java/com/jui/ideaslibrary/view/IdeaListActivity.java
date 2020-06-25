@@ -23,6 +23,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.gms.ads.AdRequest;
@@ -53,7 +54,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class IdeaListActivity extends AppCompatActivity {
+public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.ListItemLongClickListener {
     // implements IdeasAdapter.ListItemClickListener
     IdeaViewModel ideaViewModel;
     @BindView(R.id.ideasList)
@@ -70,6 +71,8 @@ public class IdeaListActivity extends AppCompatActivity {
     private Menu menu;
 
     AdView mAdView;
+    ActionMode actionMode;
+    public static List<Integer> idsToDelete=new ArrayList<>();
 
 
     @Override
@@ -79,6 +82,7 @@ public class IdeaListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         final Toolbar mToolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
 
         CollapsingToolbarLayout ctl=findViewById(R.id.collapsing_toolbar_layout);
         ctl.setTitle("My Brilliant Ideas");
@@ -93,7 +97,8 @@ public class IdeaListActivity extends AppCompatActivity {
 
             }
         });
-
+        ideaViewModel = ViewModelProviders.of(this).get(IdeaViewModel.class);
+        makeListActivity();
 
 
         AppBarLayout mAppBarLayout=(AppBarLayout)findViewById(R.id.app_bar);
@@ -118,15 +123,7 @@ public class IdeaListActivity extends AppCompatActivity {
         });
 
 
-        ideaViewModel = ViewModelProviders.of(this).get(IdeaViewModel.class);
-        ideaViewModel.refresh();
 
-
-        observeViewModel();
-        ideasAdapter =new IdeasAdapter(this,new ArrayList<>());
-
-        ideasList.setLayoutManager(new LinearLayoutManager(this));
-        ideasList.setAdapter(ideasAdapter);
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -136,6 +133,17 @@ public class IdeaListActivity extends AppCompatActivity {
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+    }
+
+    private void makeListActivity(){
+        ideaViewModel.refresh();
+        observeViewModel();
+        ideasAdapter =new IdeasAdapter(this,new ArrayList<>());
+        ideasAdapter.setItemLongClickListener(this);
+
+        ideasList.setLayoutManager(new LinearLayoutManager(this));
+        ideasList.setAdapter(ideasAdapter);
+
     }
 
 
@@ -154,6 +162,7 @@ public class IdeaListActivity extends AppCompatActivity {
         this.menu=menu;
         getMenuInflater().inflate(R.menu.listactivitymenu,menu);
         hideOption(R.id.action_add);
+        hideOption(R.id.showAll);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
@@ -190,14 +199,15 @@ public class IdeaListActivity extends AppCompatActivity {
 
             case R.id.showFavourites:
                 getFavourites();
+                showOption(R.id.showAll);
                 break;
             case  R.id.showAll:
                 ideaViewModel.refresh();
                 observeViewModel();
                 ideasAdapter =new IdeasAdapter(this,new ArrayList<>());
-
                 ideasList.setLayoutManager(new LinearLayoutManager(this));
                 ideasList.setAdapter(ideasAdapter);
+                hideOption(R.id.showAll);
                 break;
 
 
@@ -265,26 +275,60 @@ public class IdeaListActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onListLongItemClick(int clickedItemIndex) {
+        idsToDelete.add(clickedItemIndex);
+
+        actionMode = IdeaListActivity.this.startActionMode(new ContextualCallback());
+
+    }
+
+
+    class ContextualCallback implements ActionMode.Callback{
+
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            //when button is clicked
+
+            actionMode.getMenuInflater().inflate(R.menu.contextual_menu, menu);
+
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+
+            actionMode.setTitle("Delete Selected");
+
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem item) {
+
+            switch(item.getItemId()){
+
+                case R.id.menudelete:
+                    ideasAdapter.deleteSelectedIds(idsToDelete);
+                    actionMode.finish();
+                    makeListActivity();
+
+                    break;
+
+
+            }
+
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
 
 
 
+            //Action Mode is completed
 
-
-//    @Override
-//    public void onListItemClick(IdeaEntry ideaEntry) {
-//        Log.d("IDEAS","CLICKED ON "+ideaEntry);
-//        Intent intent=new Intent(IdeaListActivity.this, AddIdeaActivity.class);
-//        intent.putExtra("IDEA_ID",ideaEntry.IdeaUid);
-//
-//        intent.putExtra("problem",ideaEntry.problemStatement);
-//        intent.putExtra("idea",ideaEntry.thoughts);
-//        intent.putExtra("location",ideaEntry.location);
-//        intent.putExtra("image",ideaEntry.imageUrl);
-//        startActivity(intent);
-//    }
-//
-//    @Override
-//    public void onLongItemClick(int clickedItemIndex) {
-//        Log.d("IDEAS","LONGGGGGGGG CLICKED ON "+clickedItemIndex);
-//    }
+        }
+    }
 }

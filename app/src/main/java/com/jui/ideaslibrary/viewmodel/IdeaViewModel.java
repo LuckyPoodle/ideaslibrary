@@ -166,6 +166,16 @@ public class IdeaViewModel  extends AndroidViewModel {
         });
     }
 
+    public void deleteSelectedIdea(final List<Integer> ids) {
+        Executor myExecutor = Executors.newSingleThreadExecutor();
+        myExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                IdeaDatabase.getInstance(getApplication()).ideaDAO().deleteSelected(ids);
+            }
+        });
+    }
+
 
 
 
