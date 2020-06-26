@@ -21,17 +21,6 @@
     android:orientation="vertical"
     android:background="@drawable/borderbackground"
     tools:context=".MainActivity">
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="enableNotification"
-        android:text="enable" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="disableNotification"
-        android:text="disable" />
 
     <TextView
         android:id="@+id/textView"

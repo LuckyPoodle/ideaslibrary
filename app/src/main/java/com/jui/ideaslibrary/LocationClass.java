@@ -76,13 +76,4 @@ public class LocationClass {
 
     }
 
-
-
-
-
-
-
-
-
-
 }

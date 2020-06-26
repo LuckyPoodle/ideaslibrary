@@ -48,35 +48,7 @@
         android:contentDescription="@string/sparkAns"
         />
 
-    <TextView
 
-        android:layout_marginLeft="20dp"
-        android:id="@+id/ideaLabel"
-        android:textSize="30sp"
-        android:textStyle="bold"
-
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/ideaQn"
-        android:text="@string/ideaQn" />
-
-    <EditText
-        android:id="@+id/ideaInput"
-        android:layout_width="379dp"
-        android:layout_height="118dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/input_outline"
-        android:ems="10"
-        android:hint="@string/thoughts"
-        android:contentDescription="@string/thoughts"
-        android:inputType="textMultiLine"
-        android:padding="15dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="19sp"
-        />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

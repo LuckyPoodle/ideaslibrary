@@ -118,7 +118,6 @@ public class IdeaViewModel  extends AndroidViewModel {
         protected void onPostExecute(List<IdeaEntry> ideas){
 
             ideasRetrieved(ideas);
-            Toast.makeText(getApplication(),"ideas retrieved from DATABASE",Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -155,8 +154,6 @@ public class IdeaViewModel  extends AndroidViewModel {
         protected void onPostExecute(List<IdeaEntry> ideas){
 
             ideasRetrieved(ideas);
-            Toast.makeText(getApplication(),"favourite ideas retrieved from DATABASE",Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -173,7 +170,6 @@ public class IdeaViewModel  extends AndroidViewModel {
         //foreground thread
         @Override
         protected void onPostExecute(Integer ideacount){
-            Log.d("IDEAS","************************************count is "+count+"************************************");
             count.setValue(ideacount);
 
 

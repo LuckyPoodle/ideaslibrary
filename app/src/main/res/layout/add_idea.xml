@@ -26,6 +26,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <TextView
+
+            android:id="@+id/ideaLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_horizontal"
+            android:text="@string/ideaQn"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/ideaInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:hint="@string/thoughts"
+            android:inputType="textMultiLine"
+            android:padding="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="19sp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.062"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ideaLabel"
+
+   />
+
         <TextView
             android:id="@+id/sparkLabel"
             android:layout_width="0dp"
@@ -39,8 +80,9 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.062"
+            app:layout_constraintTop_toBottomOf="@id/ideaInput"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <EditText
@@ -60,48 +102,12 @@
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="19sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.062"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sparkLabel" />
-
-        <TextView
-
-            android:id="@+id/ideaLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/sparkLabel"
 
 
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:gravity="center_horizontal"
-            android:text="@string/ideaQn"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.062"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sparkAns" />
 
-
-        <EditText
-            android:id="@+id/ideaInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/border"
-            android:ems="10"
-            android:hint="@string/thoughts"
-            android:inputType="textMultiLine"
-            android:padding="15dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="19sp"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ideaLabel" />
+             />
 
         <LinearLayout
             android:id="@+id/gallerylayout"
@@ -116,7 +122,7 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ideaInput">
+            app:layout_constraintTop_toBottomOf="@id/sparkAns">
 
             <TextView
                 android:id="@+id/cameraLabel"

@@ -77,6 +77,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     public static List<Integer> idsToDelete = new ArrayList<>();
 
     public static boolean mostRecentFirst=false;
+    private int favouritesCount=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +158,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
 
                 if (ideacount == 0) {
                     noideasyet.setVisibility(View.VISIBLE);
+                    noideasyet.setText(R.string.noIdeasyet);
 
                 }
 
@@ -221,6 +223,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
             case R.id.showFavourites:
                 ideaViewModel.refresh();
                 getFavourites();
+
                 showOption(R.id.showAll);
                 hideOption(R.id.showFavourites);
                 break;
@@ -312,10 +315,16 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
                     ideasList.setVisibility(View.VISIBLE);
                     //loadingView.setVisibility(View.GONE);
                     userIdealist = ideas;
+                    favouritesCount=ideas.size();
                     ideasAdapter.updateIdeasList(userIdealist);
                 }
             }
         });
+        if (favouritesCount==0){
+            noideasyet.setText("No favourite ideas yet!");
+            noideasyet.setVisibility(View.VISIBLE);
+
+        }
     }
 
     @Override
