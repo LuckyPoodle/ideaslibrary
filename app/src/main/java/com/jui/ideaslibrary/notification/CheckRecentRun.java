@@ -45,13 +45,13 @@ public class CheckRecentRun extends Service {
         Log.v(TAG, "Service started");
         SharedPreferences settings = getSharedPreferences(MainActivity.PREFS, MODE_PRIVATE);
         // Are notifications enabled?
-        if (settings.getBoolean("enabled", true)) {
-            // Is it time for a notification?
-            if (settings.getLong("lastRun", Long.MAX_VALUE) < System.currentTimeMillis() - delay)
-                sendNotification();
-        } else {
-            Log.i(TAG, "Notifications are disabled");
-        }
+//        if (settings.getBoolean("enabled", true)) {
+//            // Is it time for a notification?
+//            if (settings.getLong("lastRun", Long.MAX_VALUE) < System.currentTimeMillis() - delay)
+//                sendNotification();
+//        } else {
+//            Log.i(TAG, "Notifications are disabled");
+//        }
 
         // Set an alarm for the next time this service should run:
         setAlarm();
@@ -67,7 +67,7 @@ public class CheckRecentRun extends Service {
         //Intent serviceIntent = new Intent(this, CheckRecentRun.class);
         Intent serviceIntent = new Intent(this, MyReceiver.class);
         PendingIntent pi = PendingIntent.getService(this, 131313, serviceIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
+                0);
 
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delay, pi);

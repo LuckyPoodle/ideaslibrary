@@ -12,7 +12,7 @@
   -->
 
 <resources>
-    <string name="app_name">IdeasLibrary</string>
+    <string name="app_name">"IdeasLibrary"</string>
     <string name="sparkQn">What is the spark behind your idea/thoughts?</string>
     <string name="sparkAns">What led to your ideas/thoughts?</string>
     <string name="ideaQn">Add an idea/thought</string>

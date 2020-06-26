@@ -9,14 +9,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ideaslibrary_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ideaslibrary_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".WatchAdActivity"></activity>
-        <activity android:name=".SettingActivity" />
+
 
         <receiver android:name=".IdeasLibraryWidget">
             <intent-filter>
