@@ -36,4 +36,5 @@
     <string name="setting">Setting</string>
     <string name="noIdeasyet">No ideas yet! \n Add an idea now!</string>
     <string name="adtext">What do you like about the ad below?</string>
+    <string name="reverse">Reverse Order</string>
 </resources>

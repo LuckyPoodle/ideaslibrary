@@ -239,13 +239,24 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
                     if (forSearchList.get(getAdapterPosition()).getIsFavourite()==0){
                         starbutton.setImageResource(R.drawable.favstar);
                         ivm.updateFavIdea(1,ideaid);
-                        ivm.refresh();
 
+//                        if (IdeaListActivity.mostRecentFirst==true){
+//                            ivm.refresh();
+//                            ivm.reverseOrder();
+//                        }else{
+//                            ivm.refresh();
+//                        }
+//
 
                     }else{
                         starbutton.setImageResource(R.drawable.blankstar);
                         ivm.updateFavIdea(0,ideaid);
-                        ivm.refresh();
+//                        if (IdeaListActivity.mostRecentFirst==true){
+//                            ivm.refresh();
+//                            ivm.reverseOrder();
+//                        }else{
+//                            ivm.refresh();
+//                        }
 
                     }
 

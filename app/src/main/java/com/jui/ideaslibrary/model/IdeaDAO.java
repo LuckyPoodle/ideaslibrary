@@ -51,6 +51,9 @@ public interface IdeaDAO {
     @Query("UPDATE ideaentry SET isFavourite=:fav WHERE IdeaUid= :id")
     void updateFav(int fav, int id);
 
+    @Query("SELECT * FROM ideaentry ORDER BY IdeaUid DESC")
+    List<IdeaEntry>sortByMostRecentList();
+
 
 
     @Query("SELECT * FROM ideaentry WHERE problemStatement LIKE '%'||:search||'%' OR thoughts LIKE '%'||:search||'%'")

@@ -85,7 +85,6 @@
                 android:layout_margin="20dp"
                 android:textSize="40sp"/>
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ideasList"
                 android:layout_width="match_parent"

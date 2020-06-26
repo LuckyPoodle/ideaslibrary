@@ -43,12 +43,19 @@ public class IdeaViewModel  extends AndroidViewModel {
 
 
     private AsyncTask<Void,Void,List<IdeaEntry>>RetrieveIdeasTask;
+    private AsyncTask<Void,Void,List<IdeaEntry>>RecentSortIdeasTask;
     private AsyncTask<Void,Void,Integer> GetCountTask;
     private AsyncTask<Void,Void,List<IdeaEntry>>RetrieveFavouriteIdeasTask;
+
 
     public void getFavourites(){
         RetrieveFavouriteIdeasTask =new RetrieveFavouriteIdeasTask();
         RetrieveFavouriteIdeasTask.execute();
+    }
+
+    public void reverseOrder(){
+        RecentSortIdeasTask=new RecentSortIdeasTask();
+        RecentSortIdeasTask.execute();
     }
 
 
@@ -112,6 +119,25 @@ public class IdeaViewModel  extends AndroidViewModel {
 
             ideasRetrieved(ideas);
             Toast.makeText(getApplication(),"ideas retrieved from DATABASE",Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+
+    private class RecentSortIdeasTask extends AsyncTask<Void,Void, List<IdeaEntry>> {
+
+        @Override
+        protected List<IdeaEntry> doInBackground(Void... voids) {
+            return IdeaDatabase.getInstance(getApplication()).ideaDAO().sortByMostRecentList();
+
+        }
+
+        //foreground thread
+        @Override
+        protected void onPostExecute(List<IdeaEntry> ideas){
+
+            ideasRetrieved(ideas);
+
 
         }
     }

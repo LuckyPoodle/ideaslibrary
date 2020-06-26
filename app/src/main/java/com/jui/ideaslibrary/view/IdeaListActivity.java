@@ -40,6 +40,7 @@ import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.viewmodel.IdeaViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -74,6 +75,8 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     ActionMode mActionMode;
     private ActionMode.Callback mActionModeCallback;
     public static List<Integer> idsToDelete = new ArrayList<>();
+
+    public static boolean mostRecentFirst=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +117,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
                 if (scrollRange + verticalOffset == 0) {
                     isShow = true;
                     showOption(R.id.action_add);
+
 
                 } else if (isShow) {
                     isShow = false;
@@ -215,12 +219,24 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
                 break;
 
             case R.id.showFavourites:
+                ideaViewModel.refresh();
                 getFavourites();
                 showOption(R.id.showAll);
+                hideOption(R.id.showFavourites);
                 break;
             case R.id.showAll:
+
                 makeListActivity();
                 hideOption(R.id.showAll);
+                break;
+            case R.id.reverse:
+                if (mostRecentFirst==false){
+                    reverseList();
+                    mostRecentFirst=true;
+                }else{
+                    makeListActivity();
+                }
+
                 break;
 
 
@@ -265,6 +281,24 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
                 }
             }
         });
+
+
+    }
+
+    private void reverseList(){
+        ideaViewModel.reverseOrder();
+        ideaViewModel.ideasListVM.observe(this, new Observer<List<IdeaEntry>>() {
+            @Override
+            public void onChanged(List<IdeaEntry> ideas) {
+                if (ideas != null && ideas instanceof List) {
+                    ideasList.setVisibility(View.VISIBLE);
+                    //loadingView.setVisibility(View.GONE);
+                    userIdealist = ideas;
+                    ideasAdapter.updateIdeasList(userIdealist);
+                }
+            }
+        });
+
 
 
     }

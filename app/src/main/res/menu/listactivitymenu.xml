@@ -14,6 +14,10 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/reverse"
+        android:icon="@drawable/arrow_up"
+        android:title="@string/reverse"
+        app:showAsAction="ifRoom"></item>
 
     <item
         android:id="@+id/action_search"
