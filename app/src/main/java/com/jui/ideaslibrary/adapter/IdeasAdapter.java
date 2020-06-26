@@ -15,6 +15,9 @@ package com.jui.ideaslibrary.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -172,6 +175,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
         TextView problem;
         ImageView starbutton;
         ImageView editbutton;
+        ImageView sharebutton;
         CardView item;
 
 
@@ -187,6 +191,9 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             starbutton.setOnClickListener(this);
             editbutton=itemView.findViewById(R.id.editicon);
             editbutton.setOnClickListener(this);
+            sharebutton=itemView.findViewById(R.id.share);
+            sharebutton.setOnClickListener(this);
+
 
             item.setOnClickListener(this);
 
@@ -253,6 +260,15 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
                     intent.putExtra("image",forSearchList.get(getAdapterPosition()).imageUrl);
                     intent.putExtra("isFavourite",forSearchList.get(getAdapterPosition()).isFavourite);
                     context.startActivity(intent);
+                    break;
+
+                case R.id.share:
+                    Intent shareintent = new Intent(Intent.ACTION_SEND);
+                    shareintent.setType("text/plain");
+                    IdeaEntry shareIdea=forSearchList.get(getAdapterPosition());
+                    shareintent.putExtra(Intent.EXTRA_SUBJECT, "Share My Idea");
+                    shareintent.putExtra(Intent.EXTRA_TEXT, "The Issue is "+shareIdea.problemStatement + "\n My thoughts are "+shareIdea.thoughts +"\n"+"Date: "+shareIdea.timestamp+ "\n"+"Location: "+shareIdea.location);
+                    context.startActivity(Intent.createChooser(shareintent, "Share with"));
                     break;
 
 
