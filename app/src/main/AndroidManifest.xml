@@ -44,7 +44,11 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
 
-        <receiver android:name=".util.ReminderBroadcast" />
+
+        <service
+            android:name="com.jui.ideaslibrary.notification.CheckRecentRun" >
+        </service>
+        <receiver android:name=".notification.MyReceiver"></receiver>
     </application>
 
 </manifest>
