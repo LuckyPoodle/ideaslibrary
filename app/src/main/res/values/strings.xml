@@ -38,4 +38,6 @@
     <string name="adtext">What do you like about the ad below?</string>
     <string name="reverse">Reverse Order</string>
     <string name="add">Add Idea</string>
+    <string name="nofavsyet">No favourite ideas yet!</string>
+    <string name="dots">....</string>
 </resources>

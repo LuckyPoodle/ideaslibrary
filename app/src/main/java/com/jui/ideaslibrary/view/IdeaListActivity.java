@@ -23,6 +23,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -143,6 +144,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     }
 
     private void makeListActivity() {
+        mostRecentFirst=false;
         ideaViewModel.refresh();
         observeViewModel();
         ideasAdapter = new IdeasAdapter(this, new ArrayList<>());
@@ -274,7 +276,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         ideaViewModel.loading.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isLoading) {
-                if (isLoading != null && isLoading instanceof Boolean) {
+                if (isLoading != null) {
                     loadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
                     if (isLoading) {
                         listError.setVisibility(View.GONE);
@@ -289,11 +291,12 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
     }
 
     private void reverseList(){
+        Toast.makeText(this,"Sorted By Most Recent First", Toast.LENGTH_LONG).show();
         ideaViewModel.reverseOrder();
         ideaViewModel.ideasListVM.observe(this, new Observer<List<IdeaEntry>>() {
             @Override
             public void onChanged(List<IdeaEntry> ideas) {
-                if (ideas != null && ideas instanceof List) {
+                if (ideas != null) {
                     ideasList.setVisibility(View.VISIBLE);
                     //loadingView.setVisibility(View.GONE);
                     userIdealist = ideas;
@@ -321,7 +324,7 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
             }
         });
         if (favouritesCount==0){
-            noideasyet.setText("No favourite ideas yet!");
+            noideasyet.setText(R.string.nofavsyet);
             noideasyet.setVisibility(View.VISIBLE);
 
         }
@@ -363,18 +366,14 @@ public class IdeaListActivity extends AppCompatActivity implements IdeasAdapter.
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
-            switch (item.getItemId()) {
-
-                case R.id.menudelete:
-                    ideasAdapter.deleteSelectedIds(idsToDelete);
+            if (item.getItemId()==R.id.menudelete){
+                ideasAdapter.deleteSelectedIds(idsToDelete);
 
 
-                    mode.finish();
-                    makeListActivity();
+                mode.finish();
+                makeListActivity();
 
-                    return true;
-
-
+                return true;
             }
 
             return true;

@@ -15,10 +15,7 @@ package com.jui.ideaslibrary.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +24,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.jui.ideaslibrary.AddIdeaActivity;
 import com.jui.ideaslibrary.R;
@@ -47,7 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHolder> implements Filterable {
 
     private Context context;
-    IdeaViewModel ideaViewModel;
+
     private List<IdeaEntry> fullIdeasList;
     private List<IdeaEntry> forSearchList;
     private IdeaViewModel ivm;
@@ -92,7 +89,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
     private Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<IdeaEntry> filteredList = new ArrayList<>();
+            List<IdeaEntry> filteredList = new ArrayList<IdeaEntry>();
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(fullIdeasList);
             } else {
@@ -208,7 +205,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             switch (v.getId()) {
                 case R.id.ideaitemLayout:
                     int selected=forSearchList.get(getAdapterPosition()).IdeaUid;
-                    Toast.makeText(context,"the alpha is "+item.getAlpha(),Toast.LENGTH_SHORT).show();
+
 
                     if (item.getAlpha()==0.7f){
                         item.setAlpha(1.0f);
@@ -240,23 +237,11 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
                         starbutton.setImageResource(R.drawable.favstar);
                         ivm.updateFavIdea(1,ideaid);
 
-//                        if (IdeaListActivity.mostRecentFirst==true){
-//                            ivm.refresh();
-//                            ivm.reverseOrder();
-//                        }else{
-//                            ivm.refresh();
-//                        }
-//
+
 
                     }else{
                         starbutton.setImageResource(R.drawable.blankstar);
                         ivm.updateFavIdea(0,ideaid);
-//                        if (IdeaListActivity.mostRecentFirst==true){
-//                            ivm.refresh();
-//                            ivm.reverseOrder();
-//                        }else{
-//                            ivm.refresh();
-//                        }
 
                     }
 

@@ -15,6 +15,7 @@ package com.jui.ideaslibrary.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "ideaentry")
@@ -31,6 +32,7 @@ public class IdeaEntry {
     public Integer isFavourite;
     //0 is FALSE
     //1 is TRUE
+
 
     @ColumnInfo(name="notes")
     public String notes;
@@ -62,14 +64,6 @@ public class IdeaEntry {
     public IdeaEntry() {
     }
 
-//    public IdeaEntry(String timestamp, Date datetime, String problemStatement, String location, String thoughts, String imageUrl) {
-//        this.timestamp = timestamp;
-//        this.datetime = datetime;
-//        this.problemStatement = problemStatement;
-//        this.location = location;
-//        this.thoughts = thoughts;
-//        this.imageUrl = imageUrl;
-//    }
 
     public IdeaEntry(String timestamp,String problemStatement, String location, String thoughts, String imageUrl) {
         this.timestamp = timestamp;

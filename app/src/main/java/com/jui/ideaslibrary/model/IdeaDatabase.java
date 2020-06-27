@@ -24,7 +24,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {IdeaEntry.class},version = 3)  //entities related to this particular database
 public abstract class IdeaDatabase extends RoomDatabase {
-
     //dogdatabase class be a singleton so we don create in multiple part of code, so all parts of code access the same object
     private static IdeaDatabase instance;
 
@@ -36,9 +35,7 @@ public abstract class IdeaDatabase extends RoomDatabase {
         }
     };
 
-
     static Migration migration1 =new Migration(2,3){
-
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE 'ideaentry' ADD COLUMN 'notes' TEXT" );
@@ -49,26 +46,10 @@ public abstract class IdeaDatabase extends RoomDatabase {
         if (instance==null){ //applicationcontext is maintained through life
             instance= Room.databaseBuilder(context.getApplicationContext(), IdeaDatabase.class,"ideadatabase")
                     .addMigrations(migration,migration1).build();
-
         }
-
-//        if (instance==null){ //applicationcontext is maintained through life
-//            instance= Room.databaseBuilder(context.getApplicationContext(), IdeaDatabase.class,"ideadatabase")
-//                    .build();
-//
-//        }
         return instance;
     }
 
     public abstract IdeaDAO ideaDAO();  //provide interface access
-
-    //NOW WE HAVE DATABASE, DAO, ENTITY ANNOTATED CLASS WITH DEFINED COLUMNS
-
-
-
-
-
-
-
 
 }

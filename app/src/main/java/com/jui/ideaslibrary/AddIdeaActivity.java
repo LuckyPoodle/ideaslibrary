@@ -34,6 +34,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.snackbar.Snackbar;
 import com.jui.ideaslibrary.model.IdeaDatabase;
 import com.jui.ideaslibrary.model.IdeaEntry;
@@ -120,6 +122,9 @@ public class AddIdeaActivity extends AppCompatActivity {
         setContentView(R.layout.add_idea);
         ButterKnife.bind(this);
         //locationClass = new LocationClass(this);
+        if (!checkPlayServices()){
+            Toast.makeText(AddIdeaActivity.this,"Please install Google Play",Toast.LENGTH_SHORT).show();
+        }
         fusedLocationClass=new FusedLocationClass(this);
 
         constraintlayout = findViewById(R.id.addIdealayout);
@@ -252,6 +257,7 @@ public class AddIdeaActivity extends AppCompatActivity {
         }
 
 
+
     }
 
     @OnClick(R.id.postCameraButton)
@@ -264,9 +270,32 @@ public class AddIdeaActivity extends AppCompatActivity {
     private void getImage() {
 /*       ACTION_GET_CONTENT temporary permission grant to be able to read and/or write the content. That grant will eventually lapse
 Part of the Storage Access Framework includes the concept that a provider of content can offer permission grants that can last for an extended period ("long-term, persistent"). While there's nothing stopping an app from offering such persistent permissions with ACTION_GET_CONTENT on API Level 19+, they will be more common with ACTION_OPEN_DOCUMENT.*/
+
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
         Intent galleryIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, GALLERY_CODE);
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST);
+            } else {
+                finish();
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -276,7 +305,7 @@ Part of the Storage Access Framework includes the concept that a provider of con
             if (data != null) {
                 imageUri = data.getData();
                 imageplaceholder.setVisibility(View.VISIBLE);
-                imageplaceholder.setText(imageUri.toString().substring(0, 50) + "...");
+                imageplaceholder.setText(imageUri.toString().substring(0, 50) + R.string.dots);
                 imageicon.setVisibility(View.GONE);
 
 
@@ -291,9 +320,6 @@ Part of the Storage Access Framework includes the concept that a provider of con
 
     @OnClick(R.id.locationButton)
     public void onLocationButtonClicked() {
-        //Todo: save location to string
-        //
-        //
         checkLocationPermission();
         progressBar.setVisibility(View.VISIBLE);
 
@@ -344,8 +370,9 @@ Part of the Storage Access Framework includes the concept that a provider of con
             } else {
                 requestgalleryPermission();
             }
-        }
-        getImage();
+        }getImage();
+
+
     }
 
     private void requestgalleryPermission() {
@@ -369,16 +396,20 @@ Part of the Storage Access Framework includes the concept that a provider of con
 
                 } else {
                     progressBar.setVisibility(View.GONE);
-                    Log.d("PERMISSION", "LOCATION ACCESS PERMISSION NOT GRANTED");
-                }
+                    Snackbar.make(constraintlayout, "Location access permission not granted", Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();                }
 
 
             case GALLERYREQUESTCODE:
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    Log.d("PERMISSION", "GALLERY ACCESS PERMISSION GRANTED");
-//                } else {
-//                    Log.d("PERMISSION", "GALLERY ACCESS PERMISSION NOT GRANTED");
-//                }
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Snackbar.make(constraintlayout, "Successful. Please try again", Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
+
+                } else {
+                    Snackbar.make(constraintlayout, "Gallery access permission not granted", Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
+
+                }
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
