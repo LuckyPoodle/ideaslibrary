@@ -21,6 +21,8 @@ import android.location.LocationListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,8 +37,10 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.jui.ideaslibrary.model.IdeaDatabase;
 import com.jui.ideaslibrary.model.IdeaEntry;
+import com.jui.ideaslibrary.util.Constants;
 import com.jui.ideaslibrary.view.IdeaListActivity;
 
+import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.Executor;
@@ -97,11 +101,17 @@ public class AddIdeaActivity extends AppCompatActivity {
 
 
     private String state;
-    private LocationClass locationClass;
-    public static LocationListener locationListener;
+//    private LocationClass locationClass;
+//    public static LocationListener locationListener;
+//
+    public static ResultReceiver resultReceiver;
+    private FusedLocationClass fusedLocationClass;
+
     public String[] myaddress = new String[1];
 
     private ConstraintLayout constraintlayout;
+
+
 
 
     @Override
@@ -109,11 +119,16 @@ public class AddIdeaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_idea);
         ButterKnife.bind(this);
-        locationClass = new LocationClass(this);
+        //locationClass = new LocationClass(this);
+        fusedLocationClass=new FusedLocationClass(this);
+
         constraintlayout = findViewById(R.id.addIdealayout);
 
 
         db = IdeaDatabase.getInstance(getApplicationContext());
+
+        //for location
+        resultReceiver=new AddressResultReceiver(new Handler());
 
         Intent intent = getIntent();
         if (intent.hasExtra("IDEA_ID")) {
@@ -140,41 +155,41 @@ public class AddIdeaActivity extends AppCompatActivity {
             setTitle("Add New Idea");
 
         }
-//Todo: add progress dialog when fetch llocation
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                String add = locationClass.getAddress(location);
-                if (add == null || add.trim().length() == 0) {
-                    Snackbar.make(constraintlayout, "Error detecting location, please enter manually", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                } else {
-                    locationAns.setTextSize(10);
-                    locationClass.removelistener();
-                    Snackbar.make(constraintlayout, "Location fetched. Location detection switched off", Snackbar.LENGTH_SHORT)
-                            .setAction("Action", null).show();
-                }
-                progressBar.setVisibility(View.INVISIBLE);
-                locationAns.setText(add);
 
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
+//        locationListener = new LocationListener() {
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                String add = locationClass.getAddress(location);
+//                if (add == null || add.trim().length() == 0) {
+//                    Snackbar.make(constraintlayout, "Error detecting location, please enter manually", Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
+//                } else {
+//                    locationAns.setTextSize(10);
+//                    locationClass.removelistener();
+//                    Snackbar.make(constraintlayout, "Location fetched. Location detection switched off", Snackbar.LENGTH_SHORT)
+//                            .setAction("Action", null).show();
+//                }
+//                progressBar.setVisibility(View.INVISIBLE);
+//                locationAns.setText(add);
+//
+//
+//            }
+//
+//            @Override
+//            public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderEnabled(String provider) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderDisabled(String provider) {
+//
+//            }
+//        };
 
 
     }
@@ -204,7 +219,7 @@ public class AddIdeaActivity extends AppCompatActivity {
 
         IdeaEntry newidea = new IdeaEntry();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-YYYY HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
         String formatteddate = formatter.format(timestamp);
         newidea.timestamp = formatteddate;
 
@@ -213,7 +228,7 @@ public class AddIdeaActivity extends AppCompatActivity {
         //newidea.timestamp = timestamp.toString();
         newidea.problemStatement = problem;
         newidea.thoughts = thought;
-        Log.d("LOCATION", "in createIdea =====================location is " + location);
+
         newidea.location = locationAns.getText().toString();
 
         if (imageUri != null) {
@@ -226,11 +241,11 @@ public class AddIdeaActivity extends AppCompatActivity {
 
 
         if (isEdit == false) {
-            Log.d("IDEAS", "+++++++++++++++++++++++++++isEdit == false+++++++++++++++++++++++++");
+
 
             new CreateIdeaAsyncTask().execute(newidea);
         } else {
-            Log.d("IDEAS", "+++++++++++++++++++++++++++isEdit == true+++++++++++++++++++++++++");
+
             newidea.IdeaUid = ideaid;
             newidea.isFavourite = isFavourite;
             new UpdateIdeaAsyncTask().execute(newidea);
@@ -271,6 +286,9 @@ Part of the Storage Access Framework includes the concept that a provider of con
 
     }
 
+
+
+
     @OnClick(R.id.locationButton)
     public void onLocationButtonClicked() {
         //Todo: save location to string
@@ -303,7 +321,8 @@ Part of the Storage Access Framework includes the concept that a provider of con
     }
 
     private void getLocation() {
-        locationClass.getLocation();
+        //locationClass.getLocation();
+        fusedLocationClass.getCurrentLocation();
 
     }
 
@@ -378,6 +397,35 @@ Part of the Storage Access Framework includes the concept that a provider of con
         startActivity(new Intent(AddIdeaActivity.this, IdeaListActivity.class));
 
     }
+
+    private class AddressResultReceiver extends ResultReceiver {
+
+        /**
+         * Create a new ResultReceive to receive results.  Your
+         * {@link #onReceiveResult} method will be called from the thread running
+         * <var>handler</var> if given, or from an arbitrary thread if null.
+         *
+         * @param handler
+         */
+        public AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode,Bundle resultData){
+            super.onReceiveResult(resultCode,resultData);
+            progressBar.setVisibility(View.GONE);
+            if (resultCode== Constants.SUCCESS_RESULT){
+                locationAns.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+            }else{
+                Toast.makeText(AddIdeaActivity.this,"NO ADDRESS",Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+    }
+
+
 
 
     ////////////BACKGROUND TASKS FOR creating,updating, deleting

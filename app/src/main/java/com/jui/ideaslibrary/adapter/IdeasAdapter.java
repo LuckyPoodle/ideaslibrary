@@ -98,7 +98,7 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (IdeaEntry item : fullIdeasList) {
-                    if (item.problemStatement.toLowerCase().contains(filterPattern)) {
+                    if (item.problemStatement.toLowerCase().contains(filterPattern) || item.thoughts.toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
