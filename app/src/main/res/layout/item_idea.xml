@@ -22,40 +22,13 @@
     android:padding="20dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/share"
-            android:layout_gravity="bottom|end"
-            app:srcCompat="@drawable/shareicon"
-            android:paddingRight="5dp"/>
-
-    <ImageView
-        android:id="@+id/editicon"
-        android:layout_gravity="bottom|end"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:paddingRight="5dp"
-
-        app:srcCompat="@drawable/editicon" />
-    <ImageView
-        android:id="@+id/favStar"
-        android:layout_gravity="bottom|end"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:paddingRight="5dp"
-        app:srcCompat="@drawable/blankstar" />
-    </LinearLayout>
 
 
     <LinearLayout
+        android:id="@+id/inputlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="20dp"
         android:orientation="vertical">
             <ImageView
                 android:id="@+id/ideaImage"
@@ -91,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textSize="30sp"
             android:fontFamily="sans-serif-medium"
             android:text="Problemmmm" />
 
@@ -101,11 +75,45 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:fontFamily="sans-serif-condensed"
+            android:paddingBottom="50dp"
+            android:textSize="20sp"
             android:text="my thoughtsssss " />
 
 
 
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:id="@+id/icons"
+
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/share"
+            android:layout_gravity="bottom|end"
+            app:srcCompat="@drawable/shareicon"
+            android:paddingRight="5dp"/>
+
+        <ImageView
+            android:id="@+id/editicon"
+            android:layout_gravity="bottom|end"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            android:paddingRight="5dp"
+
+            app:srcCompat="@drawable/editicon" />
+        <ImageView
+            android:id="@+id/favStar"
+            android:layout_gravity="bottom|end"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingRight="5dp"
+            app:srcCompat="@drawable/blankstar" />
     </LinearLayout>
 
 

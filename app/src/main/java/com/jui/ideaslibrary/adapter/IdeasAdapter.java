@@ -16,6 +16,11 @@ package com.jui.ideaslibrary.adapter;
 import android.content.Context;
 import android.content.Intent;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +29,11 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.jui.ideaslibrary.AddIdeaActivity;
+import com.jui.ideaslibrary.MainActivity;
 import com.jui.ideaslibrary.R;
 import com.jui.ideaslibrary.model.IdeaEntry;
 import com.jui.ideaslibrary.util.Util;
@@ -259,12 +266,29 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
                     break;
 
                 case R.id.share:
-                    Intent shareintent = new Intent(Intent.ACTION_SEND);
-                    shareintent.setType("text/plain");
                     IdeaEntry shareIdea=forSearchList.get(getAdapterPosition());
-                    shareintent.putExtra(Intent.EXTRA_SUBJECT, "Share My Idea");
-                    shareintent.putExtra(Intent.EXTRA_TEXT, "The Issue is "+shareIdea.problemStatement + "\n My thoughts are "+shareIdea.thoughts +"\n"+"Date: "+shareIdea.timestamp+ "\n"+"Location: "+shareIdea.location);
-                    context.startActivity(Intent.createChooser(shareintent, "Share with"));
+                    if (shareIdea.imageUrl==null){
+
+                        Intent shareintent = new Intent(Intent.ACTION_SEND);
+                        shareintent.setType("text/plain");
+                        shareintent.putExtra(Intent.EXTRA_SUBJECT, "Share My Idea");
+                        shareintent.putExtra(Intent.EXTRA_TEXT, "The Issue is "+shareIdea.problemStatement + "\n My thoughts are "+shareIdea.thoughts +"\n"+"Date: "+shareIdea.timestamp+ "\n"+"Location: "+shareIdea.location);
+                        context.startActivity(Intent.createChooser(shareintent, "Share with"));
+                    }else{
+                        Toast.makeText(context,"share image",Toast.LENGTH_LONG).show();
+
+                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.setType("image/*");
+                        Uri imageToShare=prepareImagetoShare(shareIdea.imageUrl);
+                        share.putExtra(Intent.EXTRA_TEXT, "The Issue is "+shareIdea.problemStatement + "\n My thoughts are "+shareIdea.thoughts +"\n"+"Date: "+shareIdea.timestamp+ "\n"+"Location: "+shareIdea.location);
+                        share.putExtra(Intent.EXTRA_STREAM, imageToShare);
+                        context.startActivity(Intent.createChooser(share, "Share with"));
+                    }
+
+
+
+
+
                     break;
 
 
@@ -273,6 +297,12 @@ public class IdeasAdapter extends RecyclerView.Adapter<IdeasAdapter.IdeaViewHold
 
             return;
 
+        }
+
+        private Uri prepareImagetoShare(String imageURL){
+
+            Uri imageToShare = Uri.parse(imageURL); //MainActivity.this is the context in my app.
+            return imageToShare;
         }
 
         @Override

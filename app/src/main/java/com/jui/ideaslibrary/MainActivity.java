@@ -13,13 +13,11 @@
 
 package com.jui.ideaslibrary;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
+
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,37 +92,9 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-//        // Save time of run:
-//        settings = getSharedPreferences(PREFS, MODE_PRIVATE);
-//        editor = settings.edit();
-//
-//        // First time running app?
-//        if (!settings.contains("lastRun"))
-//            enableNotification(null);
-//        else
-//            recordRunTime();
-//
-//        Log.v(TAG, "Starting CheckRecentRun service...");
-//        startService(new Intent(this,  CheckRecentRun.class));
     }
 
-//    public void recordRunTime() {
-//        editor.putLong("lastRun", System.currentTimeMillis());
-//        editor.commit();
-//    }
-//
-//    public void enableNotification(View v) {
-//        editor.putLong("lastRun", System.currentTimeMillis());
-//        editor.putBoolean("enabled", true);
-//        editor.commit();
-//        Log.v(TAG, "Notifications enabled");
-//    }
-//
-//    public void disableNotification(View v) {
-//        editor.putBoolean("enabled", false);
-//        editor.commit();
-//        Log.v(TAG, "Notifications disabled");
-//    }
+
 
     @OnClick({R.id.bulb, R.id.listimage})
     public void onViewClicked(View view) {

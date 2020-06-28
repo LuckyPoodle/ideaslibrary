@@ -16,8 +16,6 @@ package com.jui.ideaslibrary;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -335,7 +333,8 @@ Part of the Storage Access Framework includes the concept that a provider of con
                             requestLocationPermission();
                         })
                         .setNegativeButton("No", ((dialog, which) -> {
-                            Toast.makeText(AddIdeaActivity.this, "No external storage access", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddIdeaActivity.this, "No location access", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }))
                         .show();
             } else {
@@ -365,6 +364,7 @@ Part of the Storage Access Framework includes the concept that a provider of con
                         })
                         .setNegativeButton("No", ((dialog, which) -> {
                             Toast.makeText(AddIdeaActivity.this, "No external storage access", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }))
                         .show();
             } else {
@@ -398,7 +398,7 @@ Part of the Storage Access Framework includes the concept that a provider of con
                     progressBar.setVisibility(View.GONE);
                     Snackbar.make(constraintlayout, "Location access permission not granted", Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();                }
-
+                break;
 
             case GALLERYREQUESTCODE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -410,6 +410,7 @@ Part of the Storage Access Framework includes the concept that a provider of con
                             .setAction("Action", null).show();
 
                 }
+                break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
